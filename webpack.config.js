@@ -32,6 +32,16 @@ module.exports = {
         new CopyPlugin({
             patterns: [{ from: "manifest.json", to: "../manifest.json" }],
         }),
+        new CopyPlugin({
+            patterns: [
+                { from: "service_worker.js", to: "service_worker.js" },
+            ],
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: "content_script.js", to: "content_script.js" },
+            ],
+        }),
         ...getHtmlPlugins(["index"]),
     ],
     resolve: {
