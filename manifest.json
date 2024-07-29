@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "name": "Modestus Extension",
+  "action": {
+    "default_popup": "js/index.html",
+    "default_title": "Modestus Extension"
+  },
+  "permissions": [
+    "scripting",
+    "tabs",
+    "notifications",
+    "http://*/",
+    "https://*/",
+    "webRequest",
+    "webRequestBlocking"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "./js/service_worker.js",
+    "type": "module",
+    "mode": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./js/content_script.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/*",
+        "content-cript.js",
+        "content_script.js.map",
+        "service_worker.js, tailwind.config.js"
+      ],
+      "matches": ["*://*/*"]
+    },
+    {
+      "resources": ["style/extension.css", "script/extension.js"],
+      "matches": ["https://example.com/*"]
+    }
+  ]
+}
