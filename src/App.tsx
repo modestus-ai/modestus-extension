@@ -1,21 +1,12 @@
-// @ts-nocheck
-import { useEffect, useState } from "react";
-import "./App.css";
-import { TinyColor } from "@ctrl/tinycolor";
-import axios from "axios";
-import { getChunks, newUUID } from "./utils/common";
-import {
-  NEGATIVE_MODERATION_ARRAY,
-  POSITIVE_MODERATION_ARRAY,
-} from "./constants/moderate";
-import { Button } from "@nextui-org/react";
-import { twMerge } from "tailwind-merge";
 import RedditScan from "./pages/RedditScan";
+// import XScan from "./pages/XScan";
+import "./App.css";
 
 function App() {
   return (
-    <div className="w-[300px] h-[400px] flex items-center justify-center border border-aqua">
-     <RedditScan />
+    <div className="flex h-[400px] w-[300px] items-center justify-center border border-aqua">
+      {/* <XScan /> */}
+      <RedditScan />
     </div>
   );
 }

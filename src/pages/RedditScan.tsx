@@ -1,16 +1,15 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
-import "./App.css";
 import { TinyColor } from "@ctrl/tinycolor";
 import axios from "axios";
-import { getChunks, newUUID } from "./utils/common";
-import {
-  NEGATIVE_MODERATION_ARRAY,
-  POSITIVE_MODERATION_ARRAY,
-} from "./constants/moderate";
 import { Button } from "@nextui-org/react";
 import { twMerge } from "tailwind-merge";
 import ScanButton from "../components/ScanButton";
+import {
+  POSITIVE_MODERATION_ARRAY,
+  NEGATIVE_MODERATION_ARRAY,
+} from "../constants/moderate";
+import { getChunks, newUUID } from "../utils/common";
 
 const RedditScan = () => {
   const [loading, setLoading] = useState(false);
@@ -23,7 +22,7 @@ const RedditScan = () => {
     try {
       console.log("REACH FUNCTION SCRIPT");
       const commentElements = document.body.querySelectorAll(
-        "shreddit-comment-tree#comment-tree shreddit-comment p"
+        "shreddit-comment-tree#comment-tree shreddit-comment p",
       );
       console.log("🚀 ~ changeBackgroundColor ~ comment:", commentElements);
       const comments = Array.from(commentElements).map((commentElement) => {
@@ -39,11 +38,11 @@ const RedditScan = () => {
   function updateDomCommentModeration(
     comments,
     positiveModerationArray,
-    negativeModerationArray
+    negativeModerationArray,
   ) {
     console.log(
       "🚀 ~ updateDomCommentModeration ~ positiveModerationArray:",
-      positiveModerationArray
+      positiveModerationArray,
     );
     try {
       console.log("🚀 ~ updateDomCommentModeration ~ comments:", comments);
@@ -52,10 +51,10 @@ const RedditScan = () => {
           const text = comment.content;
           const moderateResults = comment.result;
           const domElements = document.body.querySelectorAll(
-            `shreddit-comment-tree#comment-tree shreddit-comment p`
+            `shreddit-comment-tree#comment-tree shreddit-comment p`,
           );
           const domElement = Array.from(domElements).find((el) =>
-            el.textContent.includes(text)
+            el.textContent.includes(text),
           );
 
           if (domElement) {
@@ -162,14 +161,14 @@ const RedditScan = () => {
                   bodyRequest,
                   {
                     headers: headers,
-                  }
+                  },
                 );
 
                 return response.data;
               } catch (error) {
                 console.log("🚀 ~ comments.slice ~ error:", error);
               }
-            })()
+            })(),
           );
         });
 
@@ -203,12 +202,7 @@ const RedditScan = () => {
     }
   }
 
-
-  return (
-    <div className="w-[300px] h-[400px] flex items-center justify-center border border-[#34DFE8]">
-    <ScanButton onClick={scanPageContent} isLoading={loading} />
-    </div>
-  );
-}
+  return <ScanButton onClick={scanPageContent} isLoading={loading} />;
+};
 
 export default RedditScan;
