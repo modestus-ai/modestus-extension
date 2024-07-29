@@ -133,7 +133,7 @@ function App() {
                   // },
                 };
 
-                const response = await axios.post("https://api.modestus.ai/moderate/", bodyRequest, {
+                const response = await axios.post("https://api.modestus.ai/moderate", bodyRequest, {
                   headers: headers,
                 });
 
