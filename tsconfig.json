@@ -16,5 +16,12 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "service_worker.js", "content_script.js"]
+  "include": [
+    "src",
+    "service_worker.js",
+    "content_script.js",
+    "**/*.ts",
+    "**/*.tsx",
+    "custom.d.ts"
+  ]
 }

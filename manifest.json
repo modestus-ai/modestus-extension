@@ -1,7 +1,8 @@
 {
   "version": "1.0.0",
   "manifest_version": 3,
-  "name": "Modestus Extension",
+  "name": "Modestus",
+  "description": "Modestus AI guardian for safety and valuable insights.",
   "action": {
     "default_popup": "js/index.html",
     "default_title": "Modestus Extension"
@@ -43,5 +44,11 @@
       "resources": ["style/extension.css", "script/extension.js"],
       "matches": ["https://example.com/*"]
     }
-  ]
+  ],
+  "icons": {
+    "16": "images/modestus-logo.png",
+    "32": "images/modestus-logo.png",
+    "48": "images/modestus-logo.png",
+    "128": "images/modestus-logo.png"
+  }
 }

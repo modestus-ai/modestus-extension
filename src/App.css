@@ -3,10 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   body {
-    @apply scroll-smooth bg-gray-1000 font-inter;
+    @apply scroll-smooth bg-gray-950 font-inter;
   }
 
   .effect-scale {

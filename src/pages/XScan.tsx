@@ -1,8 +1,13 @@
 import { useState } from "react";
 import ScanButton from "../components/ScanButton";
-import { v4 as uuidv4 } from "uuid";
+import { PolicyItem } from "../types/moderate.types";
+import { postModerate } from "../services/moderate";
 
-const XScan = () => {
+type Props = {
+  policies: PolicyItem[];
+};
+
+const XScan = ({ policies }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getTweets = () => {
@@ -20,29 +25,11 @@ const XScan = () => {
   const moderateTweet = async (content: string) => {
     try {
       setIsLoading(true);
-      const response = await fetch("https://api.modestus.ai/moderate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "moev-api-key": "b2d2483d-06f7-4d51-8d2f-3d7655d5e52b",
-        },
-        body: JSON.stringify({
-          request_id: uuidv4(),
-          content,
-          metrics: {
-            unsafe:
-              "content indicates or promotes hate, toxicity, racism or bias towards individual or group",
-          },
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        return data.result;
-      } else {
-        console.error("Error submitting moderation:", response.status);
-        return null;
-      }
+      const moderateData = {
+        content,
+        policies,
+      };
+      return await postModerate(moderateData);
     } catch (e) {
       console.error("Something went wrong!");
     } finally {
@@ -82,38 +69,43 @@ const XScan = () => {
           if (result !== null) {
             chrome.scripting.executeScript({
               target: { tabId },
-              func: (result, index) => {
+              func: (result: any, index) => {
                 const tweetElements = document.querySelectorAll<HTMLElement>(
                   '[data-testid="tweetText"]',
                 );
-                const tweetElement = tweetElements[index];
+                const tweetElement = tweetElements[index as number];
                 if (tweetElement) {
                   tweetElement.childNodes.forEach((child) => {
                     if (
                       child instanceof HTMLElement &&
-                      !child.classList.contains("moderation-result") &&
-                      result.unsafe.reasoning
+                      !child.className.includes("moderation-result") &&
+                      Object.keys(result).length
                     ) {
                       child.style.opacity = "0.3";
                     }
                   });
 
-                  let resultElement: HTMLElement | null =
-                    tweetElement.querySelector(".moderation-result");
+                  const resultKeys = Object.keys(result);
+                  resultKeys.forEach((resultKey, index) => {
+                    const className = `moderation-result-${index}`;
+                    let resultElement: HTMLElement | null =
+                      tweetElement.querySelector(`.${className}`);
 
-                  if (resultElement) {
-                    resultElement.innerText = result.unsafe.reasoning;
-                  } else {
-                    resultElement = document.createElement("p");
-                    resultElement.className = "moderation-result";
-                    resultElement.innerText = result.unsafe.reasoning;
-                    resultElement.style.backgroundColor = "#d53232";
-                    resultElement.style.borderRadius = "8px";
-                    resultElement.style.padding = "4px";
-                    resultElement.style.opacity = "1";
-                    resultElement.style.marginTop = "4px";
-                    tweetElement.appendChild(resultElement);
-                  }
+                    const reasoning = result[resultKey]?.reasoning;
+                    if (resultElement) {
+                      resultElement.innerText = reasoning;
+                    } else {
+                      resultElement = document.createElement("p");
+                      resultElement.className = className;
+                      resultElement.innerText = reasoning;
+                      resultElement.style.backgroundColor = "#d53232";
+                      resultElement.style.borderRadius = "8px";
+                      resultElement.style.padding = "4px";
+                      resultElement.style.opacity = "1";
+                      resultElement.style.marginTop = "4px";
+                      tweetElement.appendChild(resultElement);
+                    }
+                  });
                 }
               },
               args: [result, index],
@@ -128,11 +120,7 @@ const XScan = () => {
     }
   };
 
-  return (
-    <div>
-      <ScanButton onClick={scanPage} isLoading={isLoading} />
-    </div>
-  );
+  return <ScanButton onClick={scanPage} isLoading={isLoading} />;
 };
 
 export default XScan;

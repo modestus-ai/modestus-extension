@@ -8,7 +8,6 @@ const getTweets = () => {
 
 const updateTweetResults = (results) => {
   const tweetElements = document.querySelectorAll('[data-testid="tweetText"]');
-  console.log("123", results, tweetElements);
 
   results.forEach((result, index) => {
     const tweetElement = tweetElements[index];
