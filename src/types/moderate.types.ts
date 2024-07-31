@@ -10,10 +10,10 @@ export interface PolicyItem {
 
 export interface ModerationState {
   policies: PolicyItem[];
-  results: {
-    [key: string]: {
-      reasoning: string;
-      result: number;
-    };
-  };
+  // results: {
+  //   [key: string]: {
+  //     reasoning: string;
+  //     result: number;
+  //   };
+  // };
 }

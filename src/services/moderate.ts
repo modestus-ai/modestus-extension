@@ -3,7 +3,7 @@ import { convertPoliciesArrayToObject } from "../helpers/moderateHelper";
 import { PolicyItem } from "../types/moderate.types";
 import { v4 as uuidv4 } from "uuid";
 
-const API_KEY = "b2d2483d-06f7-4d51-8d2f-3d7655d5e52b";
+const API_KEY = "e9c3185e-d0d8-49ba-a3da-9d2b4947c15a";
 
 export const postModerate = async ({
   content,

@@ -28,6 +28,7 @@
     "dev": "webpack -w --config webpack.config.js"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.25.2",
     "@svgr/webpack": "^8.1.0",
     "@types/chrome": "^0.0.269",
     "@types/lodash": "^4.17.6",

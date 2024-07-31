@@ -5,12 +5,14 @@ import { twMerge } from "tailwind-merge";
 interface ScanButtonProps {
   onClick: () => void;
   isLoading?: boolean;
+  isDisabled?: boolean;
   scanBtnClassName?: string;
 }
 
 const ScanButton: React.FC<ScanButtonProps> = ({
   onClick,
   isLoading = false,
+  isDisabled,
   scanBtnClassName,
 }) => {
   return (
@@ -21,6 +23,7 @@ const ScanButton: React.FC<ScanButtonProps> = ({
       )}
       onClick={onClick}
       isLoading={isLoading}
+      isDisabled={isDisabled}
     >
       Scan Page
     </Button>

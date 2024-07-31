@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "name": "Modestus",
+  "description": "Modestus AI guardian for safety and valuable insights.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Modestus Extension"
+  },
+  "permissions": ["scripting", "tabs", "activeTab", "alarms", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module",
+    "mode": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["tailwind.config.js"],
+      "matches": ["<all_urls>"]
+    },
+    {
+      "resources": ["style/extension.css", "script/extension.js"],
+      "matches": ["https://example.com/*"]
+    }
+  ],
+  "icons": {
+    "16": "modestus-logo.png",
+    "32": "modestus-logo.png",
+    "48": "modestus-logo.png",
+    "128": "modestus-logo.png"
+  }
+}
