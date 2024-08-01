@@ -1,14 +1,18 @@
-import { postModerate } from "../services/moderate.ts";
+import { postModerate } from "../services/moderate";
+import { ModerationState, PolicyItem } from "../types/moderate.types";
 
-export const getContent = (querySelector) => {
-  const elements = document.querySelectorAll(querySelector);
+export const getContent = (querySelector: string) => {
+  const elements = document.querySelectorAll<HTMLElement>(querySelector);
   return Array.from(elements).map((element, index) => ({
     text: element.innerText,
     index,
   }));
 };
 
-export const moderateContent = async (content, policies) => {
+export const moderateContent = async (
+  content: string,
+  policies: PolicyItem[],
+) => {
   try {
     const moderateData = { content, policies };
     return await postModerate(moderateData);
@@ -17,7 +21,10 @@ export const moderateContent = async (content, policies) => {
   }
 };
 
-export const scanPage = async (querySelector, moderation) => {
+export const scanPage = async (
+  querySelector: string,
+  moderation: ModerationState,
+) => {
   try {
     const getContentResult = getContent(querySelector);
 
@@ -46,7 +53,9 @@ export const scanPage = async (querySelector, moderation) => {
             const resultKeys = Object.keys(result);
             resultKeys.forEach((resultKey, idx) => {
               const className = `moderation-result-${idx}`;
-              let resultElement = element.querySelector(`.${className}`);
+              let resultElement = element.querySelector<HTMLElement>(
+                `.${className}`,
+              );
 
               const reasoning = result[resultKey]?.reasoning;
               if (resultElement) {
@@ -55,7 +64,7 @@ export const scanPage = async (querySelector, moderation) => {
                 resultElement = document.createElement("p");
                 resultElement.className = className;
                 resultElement.innerText = reasoning;
-                resultElement.style.backgroundColor = "#d53232";
+                resultElement.style.backgroundColor = "#FD4040";
                 resultElement.style.borderRadius = "8px";
                 resultElement.style.padding = "4px";
                 resultElement.style.opacity = "1";

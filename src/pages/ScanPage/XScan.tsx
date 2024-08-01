@@ -1,7 +1,7 @@
-import ScanButton from "../components/ScanButton";
-import { ModerationState } from "../types/moderate.types";
-import { checkContentAndPolicies } from "../helpers/moderateHelper";
-import useContentScanner from "../hooks/useContentScanner";
+import ScanButton from "../../components/ScanButton";
+import { checkContentAndPolicies } from "../../helpers/moderateHelper";
+import useContentScanner from "../../hooks/useContentScanner";
+import { ModerationState } from "../../types/moderate.types";
 
 type Props = {
   moderation: ModerationState;
@@ -16,7 +16,7 @@ const XScan = ({ moderation, setModeration }: Props) => {
   const handleScanPage = async () => {
     const { data, hasError } = checkContentAndPolicies(moderation);
     if (hasError) {
-      setModeration((prevState) => ({
+      setModeration((prevState: ModerationState) => ({
         ...prevState,
         ...data,
       }));

@@ -1,5 +1,5 @@
 import ScanButton from "../../components/ScanButton";
-import { ModerationState } from "../../types/moderate.types";
+import { LoadingResponse, ModerationState } from "../../types/moderate.types";
 import { checkContentAndPolicies } from "../../helpers/moderateHelper";
 import { useEffect, useState } from "react";
 
@@ -12,7 +12,7 @@ const ContentScanner = ({ moderation, setModeration }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener((message) => {
+    chrome.runtime.onMessage.addListener((message: LoadingResponse) => {
       if (message.type === "LOADING_STATUS") {
         setIsLoading(message.isLoading);
       }

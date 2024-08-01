@@ -10,10 +10,20 @@ export interface PolicyItem {
 
 export interface ModerationState {
   policies: PolicyItem[];
-  // results: {
-  //   [key: string]: {
-  //     reasoning: string;
-  //     result: number;
-  //   };
-  // };
+}
+
+export interface LoadingResponse {
+  type: "LOADING_STATUS";
+  isLoading: boolean;
+}
+
+export interface ModerationResponse {
+  type: "UPDATE_MODERATION";
+  moderation: ModerationState;
+}
+
+export interface ScanAction {
+  action: "START_SCAN";
+  moderation: ModerationState;
+  querySelector: string;
 }

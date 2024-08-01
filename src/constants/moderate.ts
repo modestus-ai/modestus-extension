@@ -35,3 +35,14 @@ export const ERROR_MESSAGES = {
   policy_description: "Policy description cannot be empty.",
   policy_not_saved: "Policy has not been saved.",
 };
+
+export const URLS_SCAN: any = {
+  "x.com": '[data-testid="tweetText"]',
+  "reddit.com": '[slot="comment"]',
+};
+
+export const SCAN_PAGE_STATUS = {
+  LOADING_STATUS: "LOADING_STATUS",
+  UPDATE_MODERATION: "UPDATE_MODERATION",
+  START_SCAN: "START_SCAN",
+};
