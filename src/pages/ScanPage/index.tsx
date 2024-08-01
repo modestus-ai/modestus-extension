@@ -11,13 +11,6 @@ const ScanPage = () => {
     policies: SAMPLE_POLICIES,
   });
 
-  const handleUpdatePolicies = (newPolicies: PolicyItem[]) => {
-    setModeration((prevState) => ({
-      ...prevState,
-      policies: newPolicies,
-    }));
-  };
-
   useEffect(() => {
     chrome.storage.local.get("moderation", (res) => {
       if (res["moderation"]) {
@@ -25,6 +18,13 @@ const ScanPage = () => {
       }
     });
   }, []);
+
+  const handleUpdatePolicies = (newPolicies: PolicyItem[]) => {
+    setModeration((prevState) => ({
+      ...prevState,
+      policies: newPolicies,
+    }));
+  };
 
   return (
     <div className="flex min-h-[518px] w-[360px] flex-col">

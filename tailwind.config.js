@@ -211,6 +211,7 @@ module.exports = {
         1: "0px 0px 10.286px 0px rgba(255, 255, 255, 0.85) inset, 0px 2px 1px 0px rgba(255, 255, 255, 0.64) inset",
         2: "0px 0px 24px 0px rgba(52, 232, 158, 0.16)",
         3: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+        4: "0px 0px 10.286px 0px rgba(255, 255, 255, 0.85), 0px 2px 1px 0px rgba(255, 255, 255, 0.64), 0px 10px 48px 0px rgba(52, 223, 232, 0.24)",
       },
     },
   },

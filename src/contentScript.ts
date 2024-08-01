@@ -3,6 +3,7 @@ import {
   SCAN_PAGE_STATUS,
   URLS_SCAN,
 } from "./constants/moderate";
+import { getApiKeyModerate } from "./services/moderate";
 import { ScanAction } from "./types/moderate.types";
 import { scanPage } from "./utils/contentScanner";
 
@@ -11,23 +12,15 @@ console.log("content script loaded!");
 const { START_SCAN, LOADING_STATUS } = SCAN_PAGE_STATUS;
 const scannedContentHashes = new Set<string>();
 
-chrome.runtime.onMessage.addListener(
-  async (message: ScanAction, sender, sendResponse) => {
-    if (message.action === START_SCAN) {
-      console.log("Received moderation data:", message.moderation);
-
-      await scanPage(message.querySelector, message.moderation);
-      chrome.runtime.sendMessage({
-        type: LOADING_STATUS,
-        isLoading: false,
-      });
-      sendResponse({ status: "received" });
-    }
-  },
-);
-
+let moderateKey = "";
 let isScanning = false;
 let debounceTimeout: number | null = null;
+
+const fetchApiKey = async () => {
+  moderateKey = await getApiKeyModerate();
+};
+
+fetchApiKey();
 
 const handleScroll = () => {
   if (debounceTimeout) {
@@ -35,7 +28,7 @@ const handleScroll = () => {
   }
 
   debounceTimeout = window.setTimeout(async () => {
-    if (!isScanning) {
+    if (!isScanning && moderateKey) {
       isScanning = true;
       chrome.storage.local.get("moderation", async (res) => {
         const moderation = res["moderation"] || {
@@ -44,7 +37,12 @@ const handleScroll = () => {
         if (moderation) {
           const querySelector = getQuerySelectorForCurrentSite();
           if (querySelector) {
-            await scanPage(querySelector, moderation, scannedContentHashes);
+            await scanPage(
+              moderateKey,
+              querySelector,
+              moderation,
+              scannedContentHashes,
+            );
           }
         }
       });
@@ -62,3 +60,16 @@ const getQuerySelectorForCurrentSite = () => {
 };
 
 window.addEventListener("scroll", handleScroll);
+
+chrome.runtime.onMessage.addListener(
+  async (message: ScanAction, sender, sendResponse) => {
+    if (message.action === START_SCAN && moderateKey) {
+      await scanPage(moderateKey, message.querySelector, message.moderation);
+      chrome.runtime.sendMessage({
+        type: LOADING_STATUS,
+        isLoading: false,
+      });
+      sendResponse({ status: "received" });
+    }
+  },
+);

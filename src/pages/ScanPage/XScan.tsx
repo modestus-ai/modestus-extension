@@ -2,6 +2,7 @@ import ScanButton from "../../components/ScanButton";
 import { checkContentAndPolicies } from "../../helpers/moderateHelper";
 import useContentScanner from "../../hooks/useContentScanner";
 import { ModerationState } from "../../types/moderate.types";
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   moderation: ModerationState;
@@ -23,7 +24,7 @@ const XScan = ({ moderation, setModeration }: Props) => {
       return true;
     }
 
-    await scanPage(moderation);
+    await scanPage(uuidv4(), moderation);
   };
 
   return (

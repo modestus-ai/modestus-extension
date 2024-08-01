@@ -21,12 +21,14 @@ const useContentScanner = (querySelector: string) => {
   };
 
   const moderateContent = async (
+    apiKey: string,
     content: string,
     policies: ModerationState["policies"],
   ) => {
     try {
       setIsLoading(true);
       const moderateData = {
+        apiKey,
         content,
         policies,
       };
@@ -36,7 +38,7 @@ const useContentScanner = (querySelector: string) => {
     }
   };
 
-  const scanPage = async (moderation: ModerationState) => {
+  const scanPage = async (apiKey: string, moderation: ModerationState) => {
     try {
       let [tab] = await chrome.tabs.query({
         active: true,
@@ -60,7 +62,7 @@ const useContentScanner = (querySelector: string) => {
       const contentItems = getContentResult[0].result || [];
       if (contentItems && contentItems.length > 0) {
         const moderationPromises = contentItems.map((item: any) =>
-          moderateContent(item.text, moderation.policies),
+          moderateContent(apiKey, item.text, moderation.policies),
         );
 
         const moderationResults = await Promise.all(moderationPromises);

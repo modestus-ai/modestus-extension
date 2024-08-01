@@ -10,11 +10,12 @@ export const getContent = (querySelector: string) => {
 };
 
 export const moderateContent = async (
+  apiKey: string,
   content: string,
   policies: PolicyItem[],
 ) => {
   try {
-    const moderateData = { content, policies };
+    const moderateData = { apiKey, content, policies };
     return await postModerate(moderateData);
   } catch (e) {
     console.error("Something went wrong!", e);
@@ -23,6 +24,7 @@ export const moderateContent = async (
 };
 
 export const scanPage = async (
+  apiKey: string,
   querySelector: string,
   moderation: ModerationState,
   scannedContentHashes?: Set<string>,
@@ -43,10 +45,12 @@ export const scanPage = async (
               return true;
             }
           })
-          .map((item) => moderateContent(item.text, moderation.policies));
+          .map((item) =>
+            moderateContent(apiKey, item.text, moderation.policies),
+          );
       } else {
         moderationPromises = getContentResult.map((item) =>
-          moderateContent(item.text, moderation.policies),
+          moderateContent(apiKey, item.text, moderation.policies),
         );
       }
 
