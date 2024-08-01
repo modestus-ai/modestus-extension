@@ -48,7 +48,7 @@ const handleScroll = () => {
       });
       isScanning = false;
     }
-  }, 300);
+  }, 10);
 };
 
 const getQuerySelectorForCurrentSite = () => {
@@ -64,7 +64,12 @@ window.addEventListener("scroll", handleScroll);
 chrome.runtime.onMessage.addListener(
   async (message: ScanAction, sender, sendResponse) => {
     if (message.action === START_SCAN && moderateKey) {
-      await scanPage(moderateKey, message.querySelector, message.moderation);
+      await scanPage(
+        moderateKey,
+        message.querySelector,
+        message.moderation,
+        undefined,
+      );
       chrome.runtime.sendMessage({
         type: LOADING_STATUS,
         isLoading: false,

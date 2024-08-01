@@ -7,7 +7,17 @@
     "default_popup": "popup.html",
     "default_title": "Modestus Extension"
   },
-  "permissions": ["scripting", "tabs", "activeTab", "alarms", "storage"],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "permissions": [
+    "scripting",
+    "tabs",
+    "activeTab",
+    "alarms",
+    "storage",
+    "sidePanel"
+  ],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js",
