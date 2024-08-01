@@ -1,54 +1,19 @@
-import { SCAN_PAGE_STATUS, URLS_SCAN } from "./constants/moderate";
+import {
+  SAMPLE_POLICIES,
+  SCAN_PAGE_STATUS,
+  URLS_SCAN,
+} from "./constants/moderate";
 import { ModerationResponse, ModerationState } from "./types/moderate.types";
 
-// chrome.runtime.onInstalled.addListener(() => {
-//   console.log("Extension installed");
-//   chrome.alarms.clearAll(() => {
-//     console.log("Setting alarm");
-//     chrome.alarms.create("scanContent", { periodInMinutes: 1 });
-//   });
-// });
-
-// chrome.alarms.onAlarm.addListener(async (alarm) => {
-//   if (alarm.name === "scanContent") {
-//     let tabs: any = await chrome.tabs.query({
-//       active: true,
-//       currentWindow: true,
-//     });
-//     for (let tab of tabs) {
-//       chrome.tabs.sendMessage(
-//         tab.id,
-//         {
-//           action: "startScan",
-//           moderation: moderationState,
-//         },
-//         (response) => {
-//           if (chrome.runtime.lastError) {
-//             console.error(
-//               "Error sending message:",
-//               chrome.runtime.lastError.message,
-//             );
-//           } else {
-//             console.log("Response from content script:", response);
-//           }
-//         },
-//       );
-//     }
-//   }
-// });
 const { START_SCAN, UPDATE_MODERATION } = SCAN_PAGE_STATUS;
 
 let moderation: ModerationState = {
-  policies: [],
+  policies: SAMPLE_POLICIES,
 };
 
 chrome.storage.local.get("moderation", (res) => {
   if (res["moderation"]) {
     moderation = res["moderation"];
-  } else {
-    moderation = {
-      policies: [],
-    };
   }
 });
 

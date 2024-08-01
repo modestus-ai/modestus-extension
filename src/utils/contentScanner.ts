@@ -17,21 +17,38 @@ export const moderateContent = async (
     const moderateData = { content, policies };
     return await postModerate(moderateData);
   } catch (e) {
-    console.error("Something went wrong!");
+    console.error("Something went wrong!", e);
+    return null;
   }
 };
 
 export const scanPage = async (
   querySelector: string,
   moderation: ModerationState,
+  scannedContentHashes?: Set<string>,
 ) => {
   try {
     const getContentResult = getContent(querySelector);
 
     if (getContentResult.length > 0) {
-      const moderationPromises = getContentResult.map((item) =>
-        moderateContent(item.text, moderation.policies),
-      );
+      let moderationPromises;
+      if (scannedContentHashes) {
+        moderationPromises = getContentResult
+          .filter((item) => {
+            const hash = hashContent(item.text);
+            if (scannedContentHashes.has(hash)) {
+              return false;
+            } else {
+              scannedContentHashes.add(hash);
+              return true;
+            }
+          })
+          .map((item) => moderateContent(item.text, moderation.policies));
+      } else {
+        moderationPromises = getContentResult.map((item) =>
+          moderateContent(item.text, moderation.policies),
+        );
+      }
 
       const moderationResults = await Promise.all(moderationPromises);
 
@@ -81,4 +98,14 @@ export const scanPage = async (
   } catch (error) {
     console.error("Error in scanPage:", error);
   }
+};
+
+const hashContent = (content: string): string => {
+  let hash = 0;
+  for (let i = 0; i < content.length; i++) {
+    const char = content.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash.toString();
 };
