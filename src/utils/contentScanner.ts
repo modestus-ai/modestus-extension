@@ -4,10 +4,8 @@ import { ModerationState, PolicyItem } from "../types/moderate.types";
 export const getContent = (querySelector: string) => {
   const elements = document.querySelectorAll<HTMLElement>(querySelector);
   return Array.from(elements).map((element, index) => {
-    // Clone the element to avoid modifying the original structure
     const clone = element.cloneNode(true) as HTMLElement;
 
-    // Remove all elements with classes that start with 'moderation-result-'
     clone
       .querySelectorAll('[class^="moderation-result-"]')
       .forEach((resultElement) => resultElement.remove());

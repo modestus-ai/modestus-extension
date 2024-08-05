@@ -3,22 +3,27 @@ import {
   SCAN_PAGE_STATUS,
   URLS_SCAN,
 } from "./constants/moderate";
-import { ModerationResponse, ModerationState } from "./types/moderate.types";
+import { MessageTypes, ModerationState } from "./types/moderate.types";
 
-const { START_SCAN, UPDATE_MODERATION } = SCAN_PAGE_STATUS;
+const { START_SCAN, UPDATE_MODERATION, UPDATE_AUTO_SCAN, AUTO_SCAN_STATUS } =
+  SCAN_PAGE_STATUS;
 
 let moderation: ModerationState = {
   policies: SAMPLE_POLICIES,
 };
+let autoScan = true;
 
-chrome.storage.local.get("moderation", (res) => {
+chrome.storage.local.get(["moderation", "autoScan"], (res) => {
   if (res["moderation"]) {
     moderation = res["moderation"];
+  }
+  if (typeof res["autoScan"] === "boolean") {
+    autoScan = res["autoScan"] ? true : false;
   }
 });
 
 const sendModeration = () => {
-  const message = { action: START_SCAN, moderation };
+  const message = { action: START_SCAN, moderation, autoScan };
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabs.forEach((tab) => {
@@ -50,10 +55,39 @@ const sendModeration = () => {
   });
 };
 
-chrome.runtime.onMessage.addListener((message: ModerationResponse) => {
-  if (message.type === UPDATE_MODERATION) {
-    moderation = message?.moderation;
-    chrome.storage.local.set({ moderation });
-    sendModeration();
+const sendAutoScan = () => {
+  const message = { type: AUTO_SCAN_STATUS, autoScan };
+
+  chrome.runtime.sendMessage(message);
+
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    tabs.forEach((tab) => {
+      if (tab.id) {
+        chrome.tabs.sendMessage(tab.id, message);
+      }
+    });
+  });
+};
+
+chrome.runtime.onMessage.addListener((message: MessageTypes) => {
+  switch (message.type) {
+    case UPDATE_AUTO_SCAN:
+      if ("autoScan" in message) {
+        autoScan = message.autoScan;
+        chrome.storage.local.set({
+          autoScan: message.autoScan,
+        });
+        sendAutoScan();
+      }
+      break;
+    case UPDATE_MODERATION:
+      if ("moderation" in message && message.moderation) {
+        moderation = message.moderation;
+        chrome.storage.local.set({ moderation: message.moderation });
+        sendModeration();
+      }
+      break;
+    default:
+      break;
   }
 });

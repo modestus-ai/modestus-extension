@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import SamplePolicies from "./SamplePolicies";
 import ContentScanner from "./ContentScanner";
 import CurrentUrl from "./CurrentUrl";
+import AutoScan from "./AutoScan";
 
 const ScanPage = () => {
   const [moderation, setModeration] = useState<ModerationState>({
@@ -34,12 +35,15 @@ const ScanPage = () => {
           policies={moderation.policies}
           handleUpdatePolicies={handleUpdatePolicies}
         />
-        <div className="flex flex-col items-center justify-center space-y-3">
-          <ContentScanner
-            moderation={moderation}
-            setModeration={setModeration}
-          />
-          <CurrentUrl />
+        <div className="space-y-3">
+          <AutoScan />
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <ContentScanner
+              moderation={moderation}
+              setModeration={setModeration}
+            />
+            <CurrentUrl />
+          </div>
         </div>
       </div>
     </div>

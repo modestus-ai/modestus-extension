@@ -22,8 +22,15 @@ export interface ModerationResponse {
   moderation: ModerationState;
 }
 
+export interface AutoScanResponse {
+  type: "UPDATE_AUTO_SCAN";
+  autoScan: boolean;
+}
+
 export interface ScanAction {
   action: "START_SCAN";
   moderation: ModerationState;
   querySelector: string;
 }
+
+export type MessageTypes = ModerationResponse | AutoScanResponse;

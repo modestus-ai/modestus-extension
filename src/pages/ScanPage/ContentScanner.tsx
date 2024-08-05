@@ -2,6 +2,7 @@ import ScanButton from "../../components/ScanButton";
 import { LoadingResponse, ModerationState } from "../../types/moderate.types";
 import { checkContentAndPolicies } from "../../helpers/moderateHelper";
 import { useEffect, useState } from "react";
+import { SCAN_PAGE_STATUS } from "../../constants/moderate";
 
 type Props = {
   moderation: ModerationState;
@@ -31,7 +32,7 @@ const ContentScanner = ({ moderation, setModeration }: Props) => {
 
     setIsLoading(true);
     chrome.runtime.sendMessage({
-      type: "UPDATE_MODERATION",
+      type: SCAN_PAGE_STATUS.UPDATE_MODERATION,
       moderation,
     });
   };

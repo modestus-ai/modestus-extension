@@ -4,17 +4,18 @@ import {
   URLS_SCAN,
 } from "./constants/moderate";
 import { getApiKeyModerate } from "./services/moderate";
-import { ScanAction } from "./types/moderate.types";
+import { AutoScanResponse, ScanAction } from "./types/moderate.types";
 import { scanPage } from "./utils/contentScanner";
 
 console.log("content script loaded!");
 
-const { START_SCAN, LOADING_STATUS } = SCAN_PAGE_STATUS;
+const { START_SCAN, LOADING_STATUS, AUTO_SCAN_STATUS } = SCAN_PAGE_STATUS;
 const scannedContentHashes = new Set<string>();
 
 let moderateKey = "";
-let isScanning = false;
-let debounceTimeout: number | null = null;
+// let debounceTimeout: number | null = null;
+let isScanning: boolean = false;
+let autoScan: boolean = true;
 
 const fetchApiKey = async () => {
   moderateKey = await getApiKeyModerate();
@@ -23,11 +24,7 @@ const fetchApiKey = async () => {
 fetchApiKey();
 
 const handleScroll = () => {
-  if (debounceTimeout) {
-    clearTimeout(debounceTimeout);
-  }
-
-  debounceTimeout = window.setTimeout(async () => {
+  if (autoScan) {
     if (!isScanning && moderateKey) {
       isScanning = true;
       chrome.storage.local.get("moderation", async (res) => {
@@ -48,7 +45,7 @@ const handleScroll = () => {
       });
       isScanning = false;
     }
-  }, 10);
+  }
 };
 
 const getQuerySelectorForCurrentSite = () => {
@@ -58,8 +55,6 @@ const getQuerySelectorForCurrentSite = () => {
     URLS_SCAN["x.com"];
   return URLS_SCAN[urlKey];
 };
-
-window.addEventListener("scroll", handleScroll);
 
 chrome.runtime.onMessage.addListener(
   async (message: ScanAction, sender, sendResponse) => {
@@ -78,3 +73,11 @@ chrome.runtime.onMessage.addListener(
     }
   },
 );
+
+chrome.runtime.onMessage.addListener(async (message) => {
+  if (message.type === AUTO_SCAN_STATUS) {
+    autoScan = message.autoScan;
+  }
+});
+
+window.addEventListener("scroll", handleScroll);
