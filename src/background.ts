@@ -13,15 +13,6 @@ let moderation: ModerationState = {
 };
 let autoScan = true;
 
-chrome.storage.local.get(["moderation", "autoScan"], (res) => {
-  if (res["moderation"]) {
-    moderation = res["moderation"];
-  }
-  if (typeof res["autoScan"] === "boolean") {
-    autoScan = res["autoScan"] ? true : false;
-  }
-});
-
 const sendModeration = () => {
   const message = { action: START_SCAN, moderation, autoScan };
 
@@ -57,8 +48,6 @@ const sendModeration = () => {
 
 const sendAutoScan = () => {
   const message = { type: AUTO_SCAN_STATUS, autoScan };
-
-  chrome.runtime.sendMessage(message);
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabs.forEach((tab) => {
