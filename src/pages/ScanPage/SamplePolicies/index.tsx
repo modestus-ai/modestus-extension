@@ -1,4 +1,4 @@
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import { twMerge } from "tailwind-merge";
 import { Fragment, useCallback } from "react";
 import { PolicyItem } from "../../../types/moderate.types";
@@ -113,7 +113,7 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
   return (
     <div className="flex-1 space-y-6">
       <div className="flex items-center justify-between">
-        <h6 className="text-10 font-medium text-gray-400">SAMPLE POLICIES</h6>
+        <h6 className="text-10 font-medium text-gray-400">DEFAULT POLICIES</h6>
         <Button
           className="hover:effect-scale h-6 min-h-6 w-6 min-w-6 rounded-full border border-gray-800 bg-divider p-1"
           onClick={onResetPolices}
@@ -169,10 +169,10 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
                   </div>
                 </div>
               </div>
-              <Input
+              <Textarea
                 classNames={{
                   inputWrapper:
-                    "!bg-transparent pl-0 min-h-4 h-4 group-data-[focus-visible=true]:ring-0 group-data-[focus-visible=true]:ring-offset-0",
+                    "!bg-transparent p-0 min-h-4 h-4 group-data-[focus-visible=true]:ring-0 group-data-[focus-visible=true]:ring-offset-0",
                   input: "placeholder:text-gray-400 !text-gray-400 text-[12px]",
                 }}
                 placeholder="Add description..."
@@ -181,6 +181,7 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
                   onPolicyChange("newValue", value, index)
                 }
                 onKeyUp={(e) => e.key === "Enter" && onSavePolicy(index)}
+                maxRows={2}
               />
             </div>
             {policy.errorMsg && (

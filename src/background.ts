@@ -58,6 +58,19 @@ const sendAutoScan = () => {
   });
 };
 
+chrome.runtime.onInstalled.addListener((details) => {
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach((tab) => {
+      if (tab.id) {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ["contentScript.js"],
+        });
+      }
+    });
+  });
+});
+
 chrome.runtime.onMessage.addListener((message: MessageTypes) => {
   switch (message.type) {
     case UPDATE_AUTO_SCAN:

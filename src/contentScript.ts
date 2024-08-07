@@ -69,7 +69,7 @@ const handleScroll = () => {
         });
         isScanning = false;
       }
-    }, 10);
+    }, 1);
   }
 };
 

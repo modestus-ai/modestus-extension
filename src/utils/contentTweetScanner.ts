@@ -103,10 +103,6 @@ const appendReasoning = (
       tweetTextElement
         .querySelectorAll('[class^="moderation-result-"]')
         .forEach((resultElement) => resultElement.remove());
-      const toggleBtn = tweetTextElement.nextElementSibling as HTMLElement;
-      if (toggleBtn && toggleBtn.classList.contains("toggle-button")) {
-        toggleBtn.remove();
-      }
 
       resultKeys.forEach((resultKey, idx) => {
         const className = `moderation-result-${idx}`;
