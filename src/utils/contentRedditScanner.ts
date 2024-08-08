@@ -3,9 +3,7 @@ import { postModerate } from "../services/moderate";
 import { ModerationState, PolicyItem } from "../types/moderate.types";
 
 const getContent = () => {
-  const elements = document.querySelectorAll<HTMLElement>(
-    '[data-testid="tweet"]',
-  );
+  const elements = document.querySelectorAll<HTMLElement>("shreddit-post");
   return Array.from(elements).map((element) => {
     const clone = element.cloneNode(true) as HTMLElement;
 
@@ -13,12 +11,11 @@ const getContent = () => {
       .querySelectorAll('[class^="moderation-result-"]')
       .forEach((resultElement) => resultElement.remove());
 
-    const tweetText =
-      clone.querySelector<HTMLElement>('[data-testid="tweetText"]')
-        ?.innerText || "";
+    const title =
+      clone.querySelector<HTMLElement>('[slot="title"]')?.innerText || "";
 
     return {
-      text: tweetText,
+      text: title,
       element,
     };
   });
@@ -68,47 +65,40 @@ const appendReasoning = (
   const element = elementsMap.get(hash);
   if (!element) return;
 
+  const titleElement = element.querySelector<HTMLElement>('[slot="title"]');
+  const textBody = element.querySelector<HTMLElement>('[slot="text-body"]');
   const mediaElement = element.querySelector<HTMLElement>(
-    ".css-175oi2r.r-9aw3ui.r-1s2bzr4",
+    '[slot="post-media-container"]',
   );
 
-  const tweetTextElement = element.querySelector<HTMLElement>(
-    '[data-testid="tweetText"]',
-  );
-
-  if (tweetTextElement) {
-    if (!tweetTextElement.hasAttribute("data-visibility")) {
-      tweetTextElement.setAttribute("data-visibility", "hidden");
+  if (titleElement) {
+    if (!titleElement.hasAttribute("data-visibility")) {
+      titleElement.setAttribute("data-visibility", "hidden");
     }
 
-    const isHidden =
-      tweetTextElement.getAttribute("data-visibility") === "hidden";
+    const isHidden = titleElement.getAttribute("data-visibility") === "hidden";
 
-    tweetTextElement.childNodes.forEach((child) => {
-      if (
-        child instanceof HTMLElement &&
-        !child.className.includes("moderation-result") &&
-        Object.keys(scanResults).length
-      ) {
-        child.style.display = isHidden ? "none" : "";
-      }
-    });
+    if (titleElement && Object.keys(scanResults).length) {
+      titleElement.style.display = isHidden ? "none" : "";
+    }
 
     if (mediaElement) {
       mediaElement.style.display = isHidden ? "none" : "";
     }
 
+    if (textBody) {
+      textBody.style.display = isHidden ? "none" : "";
+    }
+
     const resultKeys = Object.keys(scanResults);
     if (resultKeys.length) {
-      tweetTextElement
+      titleElement
         .querySelectorAll('[class^="moderation-result-"]')
         .forEach((resultElement) => resultElement.remove());
 
       resultKeys.forEach((resultKey, idx) => {
         const className = `moderation-result-${idx}`;
-        let resultElement = tweetTextElement.querySelector<HTMLElement>(
-          `.${className}`,
-        );
+        let resultElement = element.querySelector<HTMLElement>(`.${className}`);
 
         const reasoning = scanResults[resultKey]?.reasoning;
         if (resultElement) {
@@ -124,23 +114,14 @@ const appendReasoning = (
           resultElement.style.fontSize = "12px";
           resultElement.style.color = "#0F303D";
           resultElement.style.opacity = "1";
-          resultElement.style.marginTop = "4px";
           resultElement.style.fontFamily = "sans-serif";
-
-          if (tweetTextElement.firstChild) {
-            tweetTextElement.insertBefore(
-              resultElement,
-              tweetTextElement.firstChild,
-            );
-          } else {
-            tweetTextElement.appendChild(resultElement);
-          }
+          titleElement.insertAdjacentElement("beforebegin", resultElement);
         }
       });
 
-      let toggleButton = tweetTextElement.nextElementSibling as HTMLElement;
-      const showContent = `<img src=${eyeOpenIcon} /> Show Content`;
-      const hideContent = `<img src=${eyeNoneIcon} /> Hide Content`;
+      let toggleButton = titleElement.nextElementSibling as HTMLElement;
+      const showContent = `<img src=${eyeOpenIcon} style="margin: 0px"/> Show Content`;
+      const hideContent = `<img src=${eyeNoneIcon} style="margin: 0px"/> Hide Content`;
       if (!toggleButton || !toggleButton.classList.contains("toggle-button")) {
         toggleButton = document.createElement("button");
         toggleButton.className = `toggle-button`;
@@ -157,48 +138,45 @@ const appendReasoning = (
         toggleButton.style.borderRadius = "1000px";
         toggleButton.style.cursor = "pointer";
         toggleButton.style.fontFamily = "sans-serif";
+        toggleButton.style.marginBottom = "4px";
+        toggleButton.style.position = "relative";
+        toggleButton.style.zIndex = "50";
 
         toggleButton.addEventListener("click", () => {
           const currentVisibility =
-            tweetTextElement.getAttribute("data-visibility");
+            titleElement.getAttribute("data-visibility");
           const newVisibility =
             currentVisibility === "hidden" ? "visible" : "hidden";
-          tweetTextElement.setAttribute("data-visibility", newVisibility);
+          titleElement.setAttribute("data-visibility", newVisibility);
           toggleButton.innerHTML =
             currentVisibility === "hidden" ? hideContent : showContent;
 
-          tweetTextElement.childNodes.forEach((child) => {
-            if (
-              child instanceof HTMLElement &&
-              !child.className.includes("moderation-result") &&
-              resultKeys.length
-            ) {
-              child.style.display = newVisibility === "hidden" ? "none" : "";
-            }
-          });
+          titleElement.style.display = newVisibility === "hidden" ? "none" : "";
 
           if (mediaElement) {
             mediaElement.style.display =
               newVisibility === "hidden" ? "none" : "";
           }
+
+          if (textBody) {
+            textBody.style.display = newVisibility === "hidden" ? "none" : "";
+          }
         });
 
-        tweetTextElement.insertAdjacentElement("afterend", toggleButton);
+        titleElement.insertAdjacentElement("afterend", toggleButton);
       }
     } else {
-      tweetTextElement
+      titleElement
         .querySelectorAll('[class^="moderation-result-"]')
         .forEach((resultElement) => resultElement.remove());
-      tweetTextElement.removeAttribute("data-visibility");
-      tweetTextElement.childNodes.forEach((child) => {
-        if (child instanceof HTMLElement) {
-          child.style.display = "";
-        }
-      });
+      // titleElement.removeAttribute("data-visibility");
       if (mediaElement) {
         mediaElement.style.display = "";
       }
-      const toggleBtn = tweetTextElement.nextElementSibling as HTMLElement;
+      if (textBody) {
+        textBody.style.display = "";
+      }
+      const toggleBtn = titleElement.nextElementSibling as HTMLElement;
       if (toggleBtn && toggleBtn.classList.contains("toggle-button")) {
         toggleBtn.remove();
       }
@@ -221,7 +199,7 @@ const checkAndAppendReasoning = (
   return false;
 };
 
-export const scanXPage = async (
+export const scanRedditPage = async (
   apiKey: string,
   moderation: ModerationState,
   scannedContentHashes?: Set<string>,

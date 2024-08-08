@@ -1,4 +1,6 @@
 import { ModerationState } from "../types/moderate.types";
+import { scanRedditPage } from "../utils/contentRedditScanner";
+import { scanXPage } from "../utils/contentTweetScanner";
 
 export const POSITIVE_MODERATION_ARRAY = ["joy"];
 // , "Surprise"];
@@ -37,8 +39,8 @@ export const ERROR_MESSAGES = {
 };
 
 export const URLS_SCAN: any = {
-  "x.com": '[data-testid="tweetText"]',
-  "reddit.com": '[slot="comment"]',
+  "x.com": scanXPage,
+  "reddit.com": scanRedditPage,
 };
 
 export const SCAN_PAGE_STATUS = {

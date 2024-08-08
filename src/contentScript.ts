@@ -1,12 +1,10 @@
 import {
   SAMPLE_POLICIES,
   SCAN_PAGE_STATUS,
-  // URLS_SCAN,
+  URLS_SCAN,
 } from "./constants/moderate";
 import { getApiKeyModerate } from "./services/moderate";
 import { ScanAction } from "./types/moderate.types";
-// import { scanPage } from "./utils/contentScanner";
-import { scanXPage } from "./utils/contentTweetScanner";
 
 console.log("content script loaded!");
 
@@ -23,23 +21,25 @@ chrome.storage.local.get("autoScan", (res) => {
     autoScan = res["autoScan"] ? true : false;
   }
 });
-const urlX = window.location.href.includes("x.com");
 
 const fetchApiKey = async () => {
   moderateKey = await getApiKeyModerate();
 };
 
-if (urlX) {
+const getScanCurrentSite = () => {
+  const url = window.location.href;
+  const urlKey = Object.keys(URLS_SCAN).find((key) => url.includes(key));
+  if (urlKey) {
+    return URLS_SCAN[urlKey];
+  }
+  return "";
+};
+
+const scanPage = getScanCurrentSite();
+
+if (scanPage) {
   fetchApiKey();
 }
-
-// const getQuerySelectorForCurrentSite = () => {
-//   const url = window.location.href;
-//   const urlKey =
-//     Object.keys(URLS_SCAN).find((key) => url.includes(key)) ||
-//     URLS_SCAN["x.com"];
-//   return URLS_SCAN[urlKey];
-// };
 
 const handleScroll = () => {
   if (autoScan) {
@@ -55,16 +55,7 @@ const handleScroll = () => {
             policies: SAMPLE_POLICIES,
           };
           if (moderation) {
-            // const querySelector = getQuerySelectorForCurrentSite();
-            if (urlX) {
-              await scanXPage(moderateKey, moderation, scannedContentHashes);
-            }
-            // await scanPage(
-            //   moderateKey,
-            //   querySelector,
-            //   moderation,
-            //   scannedContentHashes,
-            // );
+            await scanPage(moderateKey, moderation, scannedContentHashes);
           }
         });
         isScanning = false;
@@ -76,7 +67,7 @@ const handleScroll = () => {
 chrome.runtime.onMessage.addListener(
   async (message: ScanAction, sender, sendResponse) => {
     if (message.action === START_SCAN && moderateKey) {
-      await scanXPage(moderateKey, message.moderation, undefined);
+      await scanPage(moderateKey, message.moderation, undefined);
       chrome.runtime.sendMessage({
         type: LOADING_STATUS,
         isLoading: false,
