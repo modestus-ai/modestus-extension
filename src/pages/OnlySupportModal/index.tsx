@@ -7,7 +7,7 @@ const OnlySupportModal = () => {
   useLayoutEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
-        if (!tab.url?.includes("x.com")) {
+        if (tab.url && !["x.com", "reddit.com"].includes(tab.url)) {
           setIsUrlSupport(false);
         }
       });
@@ -23,9 +23,9 @@ const OnlySupportModal = () => {
             <h5 className="text-center text-14 font-medium text-white">
               Welcome to Modestus
             </h5>
-            <p className="max-w-[205px] text-center text-12 text-gray-400">
-              The current version of Modestus supports scanning only on{" "}
-              <span className="text-white">x.com</span>
+            <p className="max-w-[186px] text-center text-12 text-gray-400">
+              The current version of Modestus only supports scanning on{" "}
+              <span className="text-white">x.com and reddit.com</span>
             </p>
           </div>
         </div>

@@ -45,3 +45,17 @@ export const postModerate = async ({
     return null;
   }
 };
+
+export const moderateContent = async (
+  apiKey: string,
+  content: string,
+  policies: PolicyItem[],
+) => {
+  try {
+    const moderateData = { apiKey, content, policies };
+    return await postModerate(moderateData);
+  } catch (e) {
+    console.error("Something went wrong!", e);
+    return null;
+  }
+};

@@ -1,11 +1,11 @@
 import { Image } from "@nextui-org/react";
 import { magicWandIcon } from "../../assets/icons";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const CurrentUrl = () => {
   const [currentUrl, setCurrentUrl] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
         if (tab.url) {

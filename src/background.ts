@@ -58,7 +58,7 @@ const sendAutoScan = () => {
   });
 };
 
-chrome.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener(() => {
   chrome.tabs.query({}, (tabs) => {
     tabs.forEach((tab) => {
       if (tab.id) {

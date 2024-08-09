@@ -1,4 +1,4 @@
-import { ModerationState } from "../types/moderate.types";
+import { CheckAndAppendReasoning } from "../types/moderate.types";
 import { scanRedditPage } from "../utils/contentRedditScanner";
 import { scanXPage } from "../utils/contentTweetScanner";
 
@@ -41,6 +41,7 @@ export const ERROR_MESSAGES = {
 export const URLS_SCAN: any = {
   "x.com": scanXPage,
   "reddit.com": scanRedditPage,
+  "reddit.com/comments": scanRedditPage,
 };
 
 export const SCAN_PAGE_STATUS = {
@@ -51,3 +52,5 @@ export const SCAN_PAGE_STATUS = {
   REQ_AUTO_SCAN_STATUS: "REQ_AUTO_SCAN_STATUS",
   AUTO_SCAN_STATUS: "AUTO_SCAN_STATUS",
 };
+
+export const CONTENT_LOADED: CheckAndAppendReasoning["CONTENT_LOADED"] = {};

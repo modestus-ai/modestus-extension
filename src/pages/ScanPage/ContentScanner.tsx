@@ -14,7 +14,7 @@ const ContentScanner = ({ moderation, setModeration }: Props) => {
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message: LoadingResponse) => {
-      if (message.type === "LOADING_STATUS") {
+      if (message.type === SCAN_PAGE_STATUS.LOADING_STATUS) {
         setIsLoading(message.isLoading);
       }
     });

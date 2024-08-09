@@ -34,3 +34,24 @@ export interface ScanAction {
 }
 
 export type MessageTypes = ModerationResponse | AutoScanResponse;
+
+export interface CheckAndAppendReasoning {
+  CONTENT_LOADED: {
+    [hash: string]: {
+      [key: string]: {
+        reasoning: string;
+      };
+    };
+  };
+  item: { text: string; element: HTMLElement };
+  elementsMap: Map<string, HTMLElement>;
+  appendReasoning: (
+    hash: string,
+    scanResults: {
+      [key: string]: {
+        reasoning: string;
+      };
+    },
+    elementsMap: Map<string, HTMLElement>,
+  ) => void;
+}
