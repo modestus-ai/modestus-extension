@@ -7,7 +7,7 @@ const OnlySupportModal = () => {
   useLayoutEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
-        if (tab.url && !["x.com", "reddit.com"].includes(tab.url)) {
+        if (!tab.url?.includes("x.com") && !tab.url?.includes("reddit.com")) {
           setIsUrlSupport(false);
         }
       });
