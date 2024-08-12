@@ -11,7 +11,7 @@ import {
 } from "../constants/moderate";
 import { getChunks, newUUID } from "../utils/common";
 
-const RedditScan = () => {
+const RedditScanOld = () => {
   const [loading, setLoading] = useState(false);
   const getHoverColors = (colors: string[]) =>
     colors.map((color) => new TinyColor(color).lighten(5).toString());
@@ -205,4 +205,4 @@ const RedditScan = () => {
   return <ScanButton onClick={scanPageContent} isLoading={loading} />;
 };
 
-export default RedditScan;
+export default RedditScanOld;

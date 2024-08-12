@@ -12,6 +12,20 @@ const OnlySupportModal = () => {
         }
       });
     });
+    chrome.tabs.onActivated.addListener((activeInfo) => {
+      chrome.tabs.get(activeInfo.tabId, (tab) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError.message);
+        } else {
+          const url = tab.url;
+          if (!url?.includes("x.com") && !url?.includes("reddit.com")) {
+            setIsUrlSupport(false);
+          } else {
+            setIsUrlSupport(true);
+          }
+        }
+      });
+    });
   }, []);
 
   return !isUrlSupport ? (

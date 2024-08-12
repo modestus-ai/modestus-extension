@@ -5,12 +5,27 @@ import { useLayoutEffect, useState } from "react";
 const CurrentUrl = () => {
   const [currentUrl, setCurrentUrl] = useState("");
 
+  const updateCurrentUrl = (url: string) => {
+    const newUrl = url.split("?");
+    setCurrentUrl(newUrl[0]);
+  };
+
   useLayoutEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
         if (tab.url) {
-          const newUrl = tab.url.split("?");
-          setCurrentUrl(newUrl[0]);
+          updateCurrentUrl(tab.url);
+        }
+      });
+    });
+    chrome.tabs.onActivated.addListener((activeInfo) => {
+      chrome.tabs.get(activeInfo.tabId, (tab) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError.message);
+        } else {
+          if (tab.url) {
+            updateCurrentUrl(tab.url);
+          }
         }
       });
     });

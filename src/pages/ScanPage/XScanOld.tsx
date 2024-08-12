@@ -9,7 +9,7 @@ type Props = {
   setModeration: React.Dispatch<React.SetStateAction<ModerationState>>;
 };
 
-const XScan = ({ moderation, setModeration }: Props) => {
+const XScanOld = ({ moderation, setModeration }: Props) => {
   const { scanPage, isLoading } = useContentScanner(
     '[data-testid="tweetText"]',
   );
@@ -36,4 +36,4 @@ const XScan = ({ moderation, setModeration }: Props) => {
   );
 };
 
-export default XScan;
+export default XScanOld;

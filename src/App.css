@@ -21,4 +21,6 @@
 
 .container {
   height: 100dvh;
+  display: flex;
+  justify-content: center;
 }

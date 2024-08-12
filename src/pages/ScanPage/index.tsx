@@ -30,6 +30,7 @@ const ScanPage = () => {
   return (
     <div className="flex h-full min-h-[554px] w-[360px] flex-col">
       <Header />
+
       <div className="flex h-full flex-1 flex-col justify-between gap-6 p-6">
         <SamplePolicies
           policies={moderation.policies}

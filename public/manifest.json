@@ -5,19 +5,12 @@
   "description": "Modestus AI guardian for safety and valuable insights.",
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Modestus Extension"
+    "default_title": "Modestus"
   },
   "side_panel": {
     "default_path": "sidepanel.html"
   },
-  "permissions": [
-    "scripting",
-    "tabs",
-    "activeTab",
-    "alarms",
-    "storage",
-    "sidePanel"
-  ],
+  "permissions": ["scripting", "tabs", "activeTab", "storage", "sidePanel"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js",

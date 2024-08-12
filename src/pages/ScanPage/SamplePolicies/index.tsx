@@ -7,6 +7,7 @@ import { ResetFilledIcon } from "../../../components/Icons/ResetIcon";
 import { CloseFilledIcon } from "../../../components/Icons/CloseIcon";
 import { CheckFilledIcon } from "../../../components/Icons/CheckIcon";
 import { PlusFilledIcon } from "../../../components/Icons/PlusIcon";
+import LaunchMethod from "../../LaunchMethod";
 
 type Props = {
   policies: PolicyItem[];
@@ -114,12 +115,15 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
     <div className="flex-1 space-y-6">
       <div className="flex items-center justify-between">
         <h6 className="text-10 font-medium text-gray-400">DEFAULT POLICIES</h6>
-        <Button
-          className="hover:effect-scale h-6 min-h-6 w-6 min-w-6 rounded-full border border-gray-800 bg-divider p-1"
-          onClick={onResetPolices}
-        >
-          <ResetFilledIcon />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            className="hover:effect-scale h-6 min-h-6 w-6 min-w-6 rounded-full border border-gray-800 bg-divider p-1"
+            onClick={onResetPolices}
+          >
+            <ResetFilledIcon />
+          </Button>
+          <LaunchMethod />
+        </div>
       </div>
       <div className="flex flex-col items-center gap-3">
         {policies.map((policy, index) => (
