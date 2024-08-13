@@ -1,6 +1,6 @@
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { twMerge } from "tailwind-merge";
-import { Fragment, useCallback } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { PolicyItem } from "../../../types/moderate.types";
 import { ERROR_MESSAGES, SAMPLE_POLICIES } from "../../../constants/moderate";
 import { ResetFilledIcon } from "../../../components/Icons/ResetIcon";
@@ -15,6 +15,8 @@ type Props = {
 };
 
 const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
+  const [isFocus, setIsFocus] = useState(false);
+
   const updatePolicy = (policy: any, changes: any) => ({
     ...policy,
     ...changes,
@@ -112,7 +114,7 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
   };
 
   return (
-    <div className="flex-1 space-y-6">
+    <div className="flex-1 space-y-6" onBlur={() => setIsFocus(false)}>
       <div className="flex items-center justify-between">
         <h6 className="text-10 font-medium text-gray-400">DEFAULT POLICIES</h6>
         <div className="flex items-center gap-2">
@@ -127,7 +129,7 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
       </div>
       <div className="flex flex-col items-center gap-3">
         {policies.map((policy, index) => (
-          <Fragment key={index}>
+          <div key={index} className="group relative w-full">
             <div
               className={twMerge(
                 "w-full flex-1 space-y-2 rounded-xl border border-transparent bg-divider p-4",
@@ -149,6 +151,7 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
                   }
                   autoFocus={policy.isFocus}
                   onKeyUp={(e) => e.key === "Enter" && onSavePolicy(index)}
+                  onFocus={() => setIsFocus(true)}
                 />
                 <div className="flex items-center gap-1">
                   <div
@@ -185,6 +188,7 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
                   onPolicyChange("newValue", value, index)
                 }
                 onKeyUp={(e) => e.key === "Enter" && onSavePolicy(index)}
+                onFocus={() => setIsFocus(true)}
                 maxRows={2}
               />
             </div>
@@ -193,7 +197,17 @@ const SamplePolicies = ({ policies, handleUpdatePolicies }: Props) => {
                 {policy.errorMsg}
               </span>
             )}
-          </Fragment>
+            <div
+              className={twMerge(
+                "invisible absolute -top-[26px] left-1/4 items-center justify-center rounded-lg bg-gray-800 px-3 py-1 text-[10px] text-white opacity-0 transition-all duration-200 ease-in-out",
+                index === 0 &&
+                  !isFocus &&
+                  "group-hover:visible group-hover:opacity-100",
+              )}
+            >
+              Click to customize policy
+            </div>
+          </div>
         ))}
         {policies.length < 3 && (
           <Button
