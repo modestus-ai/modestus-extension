@@ -29,7 +29,7 @@ const OnlySupportModal = () => {
   }, []);
 
   return !isUrlSupport ? (
-    <div className="fixed inset-0 z-10 bg-[#12131A52] backdrop-blur">
+    <div className="fixed inset-0 z-[99] bg-[#12131A52] backdrop-blur">
       <div className="flex h-full w-full items-center justify-center">
         <div className="flex flex-col items-center gap-6 rounded-2xl border border-gray-800 bg-gray-950 px-6 py-10">
           <img src={modestusLogo} className="h-7 w-10" />
