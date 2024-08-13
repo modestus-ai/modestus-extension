@@ -4,7 +4,7 @@ import { SAMPLE_POLICIES } from "../../constants/moderate";
 import Header from "../../components/Header";
 import SamplePolicies from "./SamplePolicies";
 import ContentScanner from "./ContentScanner";
-import CurrentUrl from "./CurrentUrl";
+// import CurrentUrl from "./CurrentUrl";
 import AutoScan from "./AutoScan";
 
 const ScanPage = () => {
@@ -28,7 +28,7 @@ const ScanPage = () => {
   };
 
   return (
-    <div className="flex h-full min-h-[554px] w-[360px] flex-col">
+    <div className="flex h-full min-h-[554px] min-w-[360px] flex-col">
       <Header />
 
       <div className="flex h-full flex-1 flex-col justify-between gap-6 p-6">
@@ -38,12 +38,12 @@ const ScanPage = () => {
         />
         <div className="space-y-3">
           <AutoScan />
-          <div className="flex flex-col items-center justify-center space-y-3">
+          <div className="flex flex-col items-center justify-center space-y-3 pb-2">
             <ContentScanner
               moderation={moderation}
               setModeration={setModeration}
             />
-            <CurrentUrl />
+            {/* <CurrentUrl /> */}
           </div>
         </div>
       </div>
