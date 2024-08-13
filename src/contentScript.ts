@@ -41,33 +41,38 @@ if (scanPage) {
   fetchApiKey();
 }
 
-const handleScroll = () => {
-  if (autoScan) {
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout);
-    }
+const handleScanPage = async () => {
+  if (!isScanning && moderateKey) {
+    isScanning = true;
 
-    debounceTimeout = window.setTimeout(async () => {
-      if (!isScanning && moderateKey) {
-        isScanning = true;
-        chrome.storage.local.get("moderation", async (res) => {
-          const moderation = res["moderation"] || {
-            policies: SAMPLE_POLICIES,
-          };
-          if (moderation) {
-            await scanPage(moderateKey, moderation, scannedContentHashes);
-          }
-        });
-        isScanning = false;
+    chrome.storage.local.get("moderation", async (res) => {
+      const moderation = res["moderation"] || {
+        policies: SAMPLE_POLICIES,
+      };
+      if (moderation) {
+        await scanPage(moderateKey, moderation, scannedContentHashes, autoScan);
       }
-    }, 1);
+    });
+    isScanning = false;
   }
+};
+
+const handleScroll = () => {
+  if (debounceTimeout) {
+    clearTimeout(debounceTimeout);
+  }
+
+  debounceTimeout = window.setTimeout(async () => {
+    if (!isScanning && moderateKey) {
+      handleScanPage();
+    }
+  }, 1);
 };
 
 chrome.runtime.onMessage.addListener(
   async (message: ScanAction, sender, sendResponse) => {
     if (message.action === START_SCAN && moderateKey) {
-      await scanPage(moderateKey, message.moderation, undefined);
+      await scanPage(moderateKey, message.moderation, undefined, true);
       chrome.runtime.sendMessage({
         type: LOADING_STATUS,
         isLoading: false,

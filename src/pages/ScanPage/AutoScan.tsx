@@ -31,7 +31,7 @@ const AutoScan = () => {
         base: "p-0 m-0",
         label: "text-white text-[12px] font-medium",
         wrapper:
-          "bg-transparent group-data-[selected=true]:!bg-aqua group-data-[hover=true]:!bg-aqua before:!border-[1px] before:!border-[#273345] group-data-[selected=true]:before:!border-aqua rounded-md before:rounded-md after:rounded-md",
+          "bg-transparent group-data-[selected=true]:!bg-aqua group-data-[hover=true]:!bg-aqua before:!border-[1px] before:!border-aqua group-data-[selected=true]:before:!border-aqua rounded-md before:rounded-md after:rounded-md",
       }}
       onValueChange={onAutoScanChange}
       isSelected={autoScan}

@@ -10,9 +10,9 @@ const Header = () => {
         <Link
           href="https://modestus.web.app/play-ground"
           target="_blank"
-          className="flex h-fit max-h-6 items-center gap-[2px] rounded-2xl border-[1.5px] border-gray-700 px-3 py-[10px]"
+          className="flex h-fit max-h-6 items-center gap-[2px] rounded-2xl border-[1.5px] border-[#0A2029] bg-[#0A2029] px-3 py-[10px]"
         >
-          <span className="text-[8px] font-semibold text-gray-500">
+          <span className="text-[8px] font-semibold text-primary-100">
             PLAYGROUND
           </span>
           <img src={arrowTopRightIcon} alt="arrow top right icon" />

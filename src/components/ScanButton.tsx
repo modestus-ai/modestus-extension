@@ -18,7 +18,7 @@ const ScanButton: React.FC<ScanButtonProps> = ({
   return (
     <Button
       className={twMerge(
-        "h-10 w-full rounded-full bg-aqua px-7 text-16 font-medium text-gray-950 shadow-1 transition-all duration-500 ease-linear",
+        "shadow-in h-10 w-full overflow-hidden rounded-full bg-aqua px-7 text-16 font-medium text-gray-950 shadow-4 transition-all duration-500 ease-linear",
         scanBtnClassName,
       )}
       onClick={onClick}

@@ -123,6 +123,7 @@ export const scanXPage = async (
   apiKey: string,
   moderation: ModerationState,
   scannedContentHashes?: Set<string>,
+  autoScan?: boolean,
 ) => {
   try {
     const getContentResult = getContent();
@@ -155,18 +156,46 @@ export const scanXPage = async (
             }),
           );
         } else {
-          let moderationPromises = moderationScanned.map((item) => {
-            if (
-              checkAndAppendReasoning({
-                CONTENT_LOADED,
-                item,
-                elementsMap,
-                appendReasoning,
-              })
-            ) {
-              return Promise.resolve(null);
-            }
+          if (autoScan) {
+            let moderationPromises = moderationScanned.map((item) => {
+              if (
+                checkAndAppendReasoning({
+                  CONTENT_LOADED,
+                  item,
+                  elementsMap,
+                  appendReasoning,
+                })
+              ) {
+                return Promise.resolve(null);
+              }
 
+              return moderateContent(
+                apiKey,
+                item.text,
+                moderation.policies,
+              ).then((result) => {
+                if (result) {
+                  const contentHash = hashContent(item.text);
+                  CONTENT_LOADED[contentHash] = result;
+                  return result;
+                }
+                return null;
+              });
+            });
+
+            const moderationResults = await Promise.all(moderationPromises);
+
+            moderationResults.forEach((result, index) => {
+              if (result !== null) {
+                const contentHash = hashContent(moderationScanned[index].text);
+                appendReasoning(contentHash, result, elementsMap);
+              }
+            });
+          }
+        }
+      } else {
+        if (autoScan) {
+          const moderationPromises = getContentResult.map((item) => {
             return moderateContent(apiKey, item.text, moderation.policies).then(
               (result) => {
                 if (result) {
@@ -178,37 +207,15 @@ export const scanXPage = async (
               },
             );
           });
-
           const moderationResults = await Promise.all(moderationPromises);
 
           moderationResults.forEach((result, index) => {
             if (result !== null) {
-              const contentHash = hashContent(moderationScanned[index].text);
+              const contentHash = hashContent(getContentResult[index].text);
               appendReasoning(contentHash, result, elementsMap);
             }
           });
         }
-      } else {
-        const moderationPromises = getContentResult.map((item) => {
-          return moderateContent(apiKey, item.text, moderation.policies).then(
-            (result) => {
-              if (result) {
-                const contentHash = hashContent(item.text);
-                CONTENT_LOADED[contentHash] = result;
-                return result;
-              }
-              return null;
-            },
-          );
-        });
-        const moderationResults = await Promise.all(moderationPromises);
-
-        moderationResults.forEach((result, index) => {
-          if (result !== null) {
-            const contentHash = hashContent(getContentResult[index].text);
-            appendReasoning(contentHash, result, elementsMap);
-          }
-        });
       }
     } else {
       console.log("No content found or content is empty.");
