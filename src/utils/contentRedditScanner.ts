@@ -156,40 +156,75 @@ export const scanRedditPage = async (
     });
 
     if (getContentResult.length > 0) {
-      if (scannedContentHashes) {
-        const moderationScanned = getContentResult.filter((item) => {
-          const contentHash = hashContent(item.text);
-          if (scannedContentHashes.has(contentHash)) {
-            return false;
-          } else {
-            scannedContentHashes.add(contentHash);
-            return true;
-          }
-        });
+      const chunks = [];
+      for (let i = 0; i < getContentResult.length; i += 5) {
+        chunks.push(getContentResult.slice(i, i + 5));
+      }
 
-        if (moderationScanned.length === 0) {
-          getContentResult.forEach((item) =>
-            checkAndAppendReasoning({
-              CONTENT_LOADED,
-              item,
-              elementsMap,
-              appendReasoning,
-            }),
-          );
+      for (const chunk of chunks) {
+        if (scannedContentHashes) {
+          const moderationScanned = chunk.filter((item) => {
+            const contentHash = hashContent(item.text);
+            if (scannedContentHashes.has(contentHash)) {
+              return false;
+            } else {
+              scannedContentHashes.add(contentHash);
+              return true;
+            }
+          });
+
+          if (moderationScanned.length === 0) {
+            chunk.forEach((item) =>
+              checkAndAppendReasoning({
+                CONTENT_LOADED,
+                item,
+                elementsMap,
+                appendReasoning,
+              }),
+            );
+          } else {
+            if (autoScan) {
+              let moderationPromises = moderationScanned.map((item) => {
+                if (
+                  checkAndAppendReasoning({
+                    CONTENT_LOADED,
+                    item,
+                    elementsMap,
+                    appendReasoning,
+                  })
+                ) {
+                  return Promise.resolve(null);
+                }
+
+                return moderateContent(
+                  apiKey,
+                  item.text,
+                  moderation.policies,
+                ).then((result) => {
+                  if (result) {
+                    const contentHash = hashContent(item.text);
+                    CONTENT_LOADED[contentHash] = result;
+                    return result;
+                  }
+                  return null;
+                });
+              });
+
+              const moderationResults = await Promise.all(moderationPromises);
+
+              moderationResults.forEach((result, index) => {
+                if (result !== null) {
+                  const contentHash = hashContent(
+                    moderationScanned[index].text,
+                  );
+                  appendReasoning(contentHash, result, elementsMap);
+                }
+              });
+            }
+          }
         } else {
           if (autoScan) {
-            let moderationPromises = moderationScanned.map((item) => {
-              if (
-                checkAndAppendReasoning({
-                  CONTENT_LOADED,
-                  item,
-                  elementsMap,
-                  appendReasoning,
-                })
-              ) {
-                return Promise.resolve(null);
-              }
-
+            const moderationPromises = chunk.map((item) => {
               return moderateContent(
                 apiKey,
                 item.text,
@@ -203,39 +238,15 @@ export const scanRedditPage = async (
                 return null;
               });
             });
-
             const moderationResults = await Promise.all(moderationPromises);
 
             moderationResults.forEach((result, index) => {
               if (result !== null) {
-                const contentHash = hashContent(moderationScanned[index].text);
+                const contentHash = hashContent(chunk[index].text);
                 appendReasoning(contentHash, result, elementsMap);
               }
             });
           }
-        }
-      } else {
-        if (autoScan) {
-          const moderationPromises = getContentResult.map((item) => {
-            return moderateContent(apiKey, item.text, moderation.policies).then(
-              (result) => {
-                if (result) {
-                  const contentHash = hashContent(item.text);
-                  CONTENT_LOADED[contentHash] = result;
-                  return result;
-                }
-                return null;
-              },
-            );
-          });
-          const moderationResults = await Promise.all(moderationPromises);
-
-          moderationResults.forEach((result, index) => {
-            if (result !== null) {
-              const contentHash = hashContent(getContentResult[index].text);
-              appendReasoning(contentHash, result, elementsMap);
-            }
-          });
         }
       }
     } else {

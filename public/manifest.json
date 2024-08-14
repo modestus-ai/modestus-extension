@@ -11,7 +11,6 @@
     "default_path": "sidepanel.html"
   },
   "permissions": ["scripting", "tabs", "activeTab", "storage", "sidePanel"],
-  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js",
     "type": "module",
@@ -19,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["contentScript.js"]
     }
   ],
