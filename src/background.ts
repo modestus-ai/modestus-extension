@@ -58,18 +58,18 @@ const sendAutoScan = () => {
   });
 };
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.query({}, (tabs) => {
-    tabs.forEach((tab) => {
-      if (tab.id) {
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          files: ["contentScript.js"],
-        });
-      }
-    });
-  });
-});
+// chrome.runtime.onInstalled.addListener(() => {
+//   chrome.tabs.query({}, (tabs) => {
+//     tabs.forEach((tab) => {
+//       if (tab.id) {
+//         chrome.scripting.executeScript({
+//           target: { tabId: tab.id },
+//           files: ["contentScript.js"],
+//         });
+//       }
+//     });
+//   });
+// });
 
 chrome.runtime.onMessage.addListener((message: MessageTypes) => {
   switch (message.type) {

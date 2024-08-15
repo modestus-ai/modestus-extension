@@ -2,11 +2,6 @@ import { CheckAndAppendReasoning } from "../types/moderate.types";
 import { scanRedditPage } from "../utils/contentRedditScanner";
 import { scanXPage } from "../utils/contentTweetScanner";
 
-export const POSITIVE_MODERATION_ARRAY = ["joy"];
-// , "Surprise"];
-export const NEGATIVE_MODERATION_ARRAY = ["unsafe"];
-// , "Sadness", "Fear", "Disgust"];
-
 const createSamplePoliciesItem = (label: string, value: string) => ({
   label,
   value,
