@@ -1,17 +1,29 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { modestusLogo } from "../../assets/icons";
 
 const OnlySupportModal = () => {
   const [isUrlSupport, setIsUrlSupport] = useState<boolean>(true);
 
-  useLayoutEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      tabs.forEach((tab) => {
-        if (!tab.url?.includes("x.com") && !tab.url?.includes("reddit.com")) {
-          setIsUrlSupport(false);
-        }
-      });
-    });
+  const queryChromeTabs = () => {
+    chrome.tabs.query(
+      {
+        active: true,
+        currentWindow: true,
+      },
+      (tabs) => {
+        tabs.forEach((tab) => {
+          if (!tab.url?.includes("x.com") && !tab.url?.includes("reddit.com")) {
+            setIsUrlSupport(false);
+          } else {
+            setIsUrlSupport(true);
+          }
+        });
+      },
+    );
+  };
+
+  useEffect(() => {
+    queryChromeTabs();
     chrome.tabs.onActivated.addListener((activeInfo) => {
       chrome.tabs.get(activeInfo.tabId, (tab) => {
         if (chrome.runtime.lastError) {
@@ -26,13 +38,9 @@ const OnlySupportModal = () => {
         }
       });
     });
-    chrome.tabs.onUpdated.addListener((activeInfo, changeInfo, tab) => {
-      const url = tab.url;
-      if (!url?.includes("x.com") && !url?.includes("reddit.com")) {
-        setIsUrlSupport(false);
-      } else {
-        setIsUrlSupport(true);
-      }
+
+    chrome.tabs.onUpdated.addListener(() => {
+      queryChromeTabs();
     });
   }, []);
 
