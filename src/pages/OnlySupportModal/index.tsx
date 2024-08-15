@@ -6,7 +6,6 @@ const OnlySupportModal = () => {
 
   useLayoutEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      console.log("123");
       tabs.forEach((tab) => {
         if (!tab.url?.includes("x.com") && !tab.url?.includes("reddit.com")) {
           setIsUrlSupport(false);
@@ -14,7 +13,6 @@ const OnlySupportModal = () => {
       });
     });
     chrome.tabs.onActivated.addListener((activeInfo) => {
-      console.log("456");
       chrome.tabs.get(activeInfo.tabId, (tab) => {
         if (chrome.runtime.lastError) {
           console.error(chrome.runtime.lastError.message);
@@ -29,7 +27,6 @@ const OnlySupportModal = () => {
       });
     });
     chrome.tabs.onUpdated.addListener((activeInfo, changeInfo, tab) => {
-      console.log({ activeInfo, changeInfo, tab });
       const url = tab.url;
       if (!url?.includes("x.com") && !url?.includes("reddit.com")) {
         setIsUrlSupport(false);

@@ -9,7 +9,6 @@ const AutoScan = () => {
 
   useLayoutEffect(() => {
     chrome.storage.local.get("autoScan", (res) => {
-      console.log(res, typeof res["autoScan"] === "boolean");
       if (typeof res["autoScan"] === "boolean") {
         setAutoScan(res["autoScan"]);
       }
