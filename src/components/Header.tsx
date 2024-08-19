@@ -8,7 +8,7 @@ const Header = () => {
       <div className="flex items-center justify-between gap-2">
         <ModestusLogo />
         <Link
-          href="https://modestus.web.app/play-ground"
+          href="https://modestus.ai/play-ground"
           target="_blank"
           className="flex h-fit max-h-6 items-center gap-[2px] rounded-2xl border-[1.5px] border-[#0A2029] bg-[#0A2029] px-3 py-[10px]"
         >

@@ -31,7 +31,7 @@
   "icons": {
     "16": "modestus-16x16.png",
     "32": "modestus-32x32.png",
-    "48": "modestus-64x64.png",
+    "64": "modestus-64x64.png",
     "128": "modestus-128x128.png"
   }
 }

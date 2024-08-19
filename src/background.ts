@@ -4,6 +4,7 @@ import {
   URLS_SCAN,
 } from "./constants/moderate";
 import { MessageTypes, ModerationState } from "./types/moderate.types";
+import { checkUrlSupport } from "./utils/common";
 
 const { START_SCAN, UPDATE_MODERATION, UPDATE_AUTO_SCAN, AUTO_SCAN_STATUS } =
   SCAN_PAGE_STATUS;
@@ -12,6 +13,31 @@ let moderation: ModerationState = {
   policies: SAMPLE_POLICIES,
 };
 let autoScan = true;
+
+const setExtensionIcon = (isSupported: boolean) => {
+  chrome.action.setIcon({
+    path: isSupported
+      ? {
+          16: "modestus-16x16.png",
+          48: "modestus-32x32.png",
+          64: "modestus-64x64.png",
+          128: "modestus-128x128.png",
+        }
+      : {
+          16: "modestus-deactive-16x16.png",
+          48: "modestus-deactive-32x32.png",
+          64: "modestus-deactive-64x64.png",
+          128: "modestus-deactive-128x128.png",
+        },
+  });
+};
+
+const checkAndSetIcon = (tab: any) => {
+  if (tab.id) {
+    const isSupported = checkUrlSupport(tab.url);
+    setExtensionIcon(isSupported);
+  }
+};
 
 const sendModeration = () => {
   const message = { action: START_SCAN, moderation, autoScan };
@@ -58,19 +84,6 @@ const sendAutoScan = () => {
   });
 };
 
-// chrome.runtime.onInstalled.addListener(() => {
-//   chrome.tabs.query({}, (tabs) => {
-//     tabs.forEach((tab) => {
-//       if (tab.id) {
-//         chrome.scripting.executeScript({
-//           target: { tabId: tab.id },
-//           files: ["contentScript.js"],
-//         });
-//       }
-//     });
-//   });
-// });
-
 chrome.runtime.onMessage.addListener((message: MessageTypes) => {
   switch (message.type) {
     case UPDATE_AUTO_SCAN:
@@ -93,3 +106,32 @@ chrome.runtime.onMessage.addListener((message: MessageTypes) => {
       break;
   }
 });
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.url) {
+    checkAndSetIcon(tab);
+  }
+});
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+    if (chrome.runtime.lastError) {
+      console.error(chrome.runtime.lastError.message);
+    } else {
+      checkAndSetIcon(tab);
+    }
+  });
+});
+
+// chrome.runtime.onInstalled.addListener(() => {
+//   chrome.tabs.query({}, (tabs) => {
+//     tabs.forEach((tab) => {
+//       if (tab.id) {
+//         chrome.scripting.executeScript({
+//           target: { tabId: tab.id },
+//           files: ["contentScript.js"],
+//         });
+//       }
+//     });
+//   });
+// });

@@ -104,3 +104,14 @@ export const removeContentElements = (element: HTMLElement) => {
 
   element.querySelector<HTMLElement>(".toggle-button")?.remove();
 };
+
+export const checkUrlSupport = (url: string): boolean => {
+  if (url) {
+    return (
+      url.includes("x.com") ||
+      url.includes("twitter.com") ||
+      url.includes("reddit.com")
+    );
+  }
+  return false;
+};
