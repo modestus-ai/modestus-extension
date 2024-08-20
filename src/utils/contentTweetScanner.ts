@@ -6,6 +6,7 @@ import {
   contentScanElement,
   hashContent,
   removeContentElements,
+  scanWrapperElement,
   showHideElement,
   toggleButtonElement,
 } from "./common";
@@ -72,18 +73,25 @@ const appendReasoning = (
     }
 
     if (resultKeys.length) {
-      resultKeys.forEach((resultKey, idx) => {
-        const className = `moderation-result-${idx}`;
-        let resultElement = element.querySelector<HTMLElement>(`.${className}`);
+      // resultKeys.forEach((resultKey, idx) => {
+      //   const className = `moderation-result-${idx}`;
+      //   let resultElement = element.querySelector<HTMLElement>(`.${className}`);
 
-        const reasoning = scanResults[resultKey]?.reasoning;
-        if (resultElement) {
-          resultElement.innerText = reasoning;
-        } else {
-          const resultElement = contentScanElement(className, reasoning);
-          tweetTextElement.insertAdjacentElement("beforebegin", resultElement);
-        }
-      });
+      //   const reasoning = scanResults[resultKey]?.reasoning;
+      //   if (resultElement) {
+      //     resultElement.innerText = reasoning;
+      //   } else {
+      //     const resultElement = contentScanElement(className, reasoning);
+      //     tweetTextElement.insertAdjacentElement("beforebegin", resultElement);
+      //   }
+      // });
+
+      let resultElement =
+        element.querySelector<HTMLElement>(".moderation-result");
+      if (!resultElement) {
+        resultElement = scanWrapperElement(scanResults);
+        tweetTextElement.insertAdjacentElement("beforebegin", resultElement);
+      }
 
       if (!toggleBtnElement) {
         const { showElement, hideElement } = showHideElement();
@@ -106,7 +114,8 @@ const appendReasoning = (
               newVisibility === "hidden" ? "none" : "";
           }
         });
-        tweetTextElement.insertAdjacentElement("beforebegin", button);
+        resultElement.appendChild(button);
+        // tweetTextElement.appendChild("beforebegin", button);
       }
     } else {
       removeContentElements(element);

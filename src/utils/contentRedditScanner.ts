@@ -6,6 +6,7 @@ import {
   contentScanElement,
   hashContent,
   removeContentElements,
+  scanWrapperElement,
   showHideElement,
   toggleButtonElement,
 } from "./common";
@@ -86,18 +87,24 @@ const appendReasoning = (
     const resultKeys = Object.keys(scanResults);
 
     if (resultKeys.length) {
-      resultKeys.forEach((resultKey, idx) => {
-        const className = `moderation-result-${idx}`;
-        let resultElement = element.querySelector<HTMLElement>(`.${className}`);
+      // resultKeys.forEach((resultKey, idx) => {
+      //   const className = `moderation-result-${idx}`;
+      //   let resultElement = element.querySelector<HTMLElement>(`.${className}`);
 
-        const reasoning = scanResults[resultKey]?.reasoning;
-        if (resultElement) {
-          resultElement.innerText = reasoning;
-        } else {
-          const resultElement = contentScanElement(className, reasoning);
-          titleElement.insertAdjacentElement("beforebegin", resultElement);
-        }
-      });
+      //   const reasoning = scanResults[resultKey]?.reasoning;
+      //   if (resultElement) {
+      //     resultElement.innerText = reasoning;
+      //   } else {
+      //     const resultElement = contentScanElement(className, reasoning);
+      //     titleElement.insertAdjacentElement("beforebegin", resultElement);
+      //   }
+      // });
+      let resultElement =
+        element.querySelector<HTMLElement>(".moderation-result");
+      if (!resultElement) {
+        resultElement = scanWrapperElement(scanResults);
+        titleElement.insertAdjacentElement("beforebegin", resultElement);
+      }
 
       if (!toggleBtnElement) {
         const { showElement, hideElement } = showHideElement();
@@ -124,7 +131,8 @@ const appendReasoning = (
             textBody.style.display = newVisibility === "hidden" ? "none" : "";
           }
         });
-        titleElement.insertAdjacentElement("afterend", button);
+        // titleElement.insertAdjacentElement("afterend", button);
+        resultElement.appendChild(button);
       }
     } else {
       removeContentElements(element);

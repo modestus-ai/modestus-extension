@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
   "manifest_version": 3,
-  "name": "Modestus",
-  "description": "Modestus AI guardian for safety and valuable insights.",
+  "name": "Modestus Safeguard",
+  "description": "Modestus Safeguard is a powerful Chrome extension designed to enhance your social media experience by filtering out unwanted content from your X (formerly Twitter) and Reddit feeds.",
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Modestus"
+    "default_title": "Modestus Safeguard"
   },
   "side_panel": {
     "default_path": "sidepanel.html"

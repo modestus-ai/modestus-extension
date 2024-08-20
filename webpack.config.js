@@ -25,13 +25,24 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jpg|gif|svg)$/i,
+        test: /\.(gif|svg)$/i,
         use: [
           "@svgr/webpack",
           {
             loader: "url-loader",
             options: {
               limit: 8192,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpg)$/i,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              mimetype: "image/png",
             },
           },
         ],
