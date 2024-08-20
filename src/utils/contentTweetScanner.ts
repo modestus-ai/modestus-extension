@@ -96,7 +96,7 @@ const appendReasoning = (
       if (!toggleBtnElement) {
         const { showElement, hideElement } = showHideElement();
 
-        const button = toggleButtonElement(showElement);
+        const button = toggleButtonElement(hideElement);
 
         button.addEventListener("click", () => {
           const newVisibility =
@@ -121,7 +121,7 @@ const appendReasoning = (
       }
     } else {
       removeContentElements(element);
-      // tweetTextElement.removeAttribute("data-visibility");
+      tweetTextElement.removeAttribute("data-visibility");
       tweetTextElement.style.display = "";
       if (mediaElement) {
         mediaElement.style.display = "";

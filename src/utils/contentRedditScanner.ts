@@ -109,7 +109,7 @@ const appendReasoning = (
       if (!toggleBtnElement) {
         const { showElement, hideElement } = showHideElement();
 
-        const button = toggleButtonElement(showElement);
+        const button = toggleButtonElement(hideElement);
 
         button.addEventListener("click", () => {
           const newVisibility =
@@ -139,7 +139,7 @@ const appendReasoning = (
       }
     } else {
       removeContentElements(element);
-      // titleElement.removeAttribute("data-visibility");
+      titleElement.removeAttribute("data-visibility");
       titleElement.style.display = "";
       if (mediaElement) {
         mediaElement.style.display = "";

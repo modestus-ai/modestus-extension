@@ -168,10 +168,9 @@ export const scanWrapperElement = (scanResults: any) => {
 };
 
 export const removeContentElements = (element: HTMLElement) => {
-  element
-    .querySelectorAll('[class^="moderation-result-"]')
-    .forEach((resultElement) => resultElement.remove());
-
+  const moreElement = element.querySelector(".moderation-result");
+  console.log({ moreElement });
+  moreElement?.remove();
   element.querySelector<HTMLElement>(".toggle-button")?.remove();
 };
 
