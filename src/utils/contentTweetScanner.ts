@@ -99,19 +99,21 @@ const appendReasoning = (
         const button = toggleButtonElement(showElement);
 
         button.addEventListener("click", () => {
-          const currentVisibility =
-            tweetTextElement.getAttribute("data-visibility");
           const newVisibility =
-            currentVisibility === "hidden" ? "visible" : "hidden";
-          tweetTextElement.setAttribute("data-visibility", newVisibility);
-          button.innerHTML =
-            currentVisibility === "hidden" ? hideElement : showElement;
+            tweetTextElement.getAttribute("data-visibility") === "hidden"
+              ? "visible"
+              : "hidden";
 
-          tweetTextElement.style.display =
-            newVisibility === "hidden" ? "none" : "";
+          tweetTextElement.setAttribute("data-visibility", newVisibility);
+
+          const display = newVisibility === "hidden" ? "none" : "";
+
+          button.innerHTML =
+            newVisibility === "hidden" ? hideElement : showElement;
+
+          tweetTextElement.style.display = display;
           if (mediaElement) {
-            mediaElement.style.display =
-              newVisibility === "hidden" ? "none" : "";
+            mediaElement.style.display = display;
           }
         });
         resultElement.appendChild(button);

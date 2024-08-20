@@ -112,23 +112,26 @@ const appendReasoning = (
         const button = toggleButtonElement(showElement);
 
         button.addEventListener("click", () => {
-          const currentVisibility =
-            titleElement.getAttribute("data-visibility");
           const newVisibility =
-            currentVisibility === "hidden" ? "visible" : "hidden";
-          titleElement.setAttribute("data-visibility", newVisibility);
-          button.innerHTML =
-            currentVisibility === "hidden" ? hideElement : showElement;
+            titleElement.getAttribute("data-visibility") === "hidden"
+              ? "visible"
+              : "hidden";
 
-          titleElement.style.display = newVisibility === "hidden" ? "none" : "";
+          titleElement.setAttribute("data-visibility", newVisibility);
+
+          const display = newVisibility === "hidden" ? "none" : "";
+
+          button.innerHTML =
+            newVisibility === "hidden" ? hideElement : showElement;
+
+          titleElement.style.display = display;
 
           if (mediaElement) {
-            mediaElement.style.display =
-              newVisibility === "hidden" ? "none" : "";
+            mediaElement.style.display = display;
           }
 
           if (textBody) {
-            textBody.style.display = newVisibility === "hidden" ? "none" : "";
+            textBody.style.display = display;
           }
         });
         // titleElement.insertAdjacentElement("afterend", button);
