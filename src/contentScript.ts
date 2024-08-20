@@ -78,16 +78,14 @@ chrome.runtime.onMessage.addListener(
           chrome.runtime.sendMessage({
             type: LOADING_STATUS,
             isLoading: false,
-            isScanned: true,
-            isError: false,
+            scanStatus: "success",
           });
           sendResponse({ status: "Page scanned successfully!" });
         } else {
           chrome.runtime.sendMessage({
             type: LOADING_STATUS,
             isLoading: false,
-            isScanned: false,
-            isError: true,
+            scanStatus: "error",
           });
         }
       }
@@ -95,8 +93,7 @@ chrome.runtime.onMessage.addListener(
       chrome.runtime.sendMessage({
         type: LOADING_STATUS,
         isLoading: false,
-        isScanned: false,
-        isError: true,
+        scanStatus: "error",
       });
       sendResponse({ status: "Page scan error!" });
     }

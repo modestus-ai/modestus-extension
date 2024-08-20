@@ -12,11 +12,14 @@ export interface ModerationState {
   policies: PolicyItem[];
 }
 
+export type NotificationScanProps = {
+  type: "success" | "error";
+};
+
 export interface LoadingResponse {
   type: "LOADING_STATUS";
   isLoading: boolean;
-  isScanned: boolean;
-  isError?: boolean;
+  scanStatus: NotificationScanProps;
 }
 
 export interface ModerationResponse {

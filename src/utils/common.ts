@@ -27,6 +27,13 @@ export const newUUID = () => {
   return uuidv4();
 };
 
+export const capitalizeFirstLetter = (str: string): string => {
+  if (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  return "";
+};
+
 export const hashContent = (content: string): string => {
   let hash = 0;
   for (let i = 0; i < content.length; i++) {
@@ -129,7 +136,7 @@ export const scanWrapperElement = (scanResults: any) => {
           .map((scanKey) => {
             return `
               <p key="${scanKey}" style="font-size: 12px; color: #123237; font-family: 'Inter', sans-serif; margin: 0px;">
-                <span style="font-weight: bold;">${scanKey}:</span> ${scanResults[scanKey]?.reasoning}
+                <span style="font-weight: bold;">${capitalizeFirstLetter(scanKey)}:</span> ${scanResults[scanKey]?.reasoning}
               </p>
             `;
           })
