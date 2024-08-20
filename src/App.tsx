@@ -4,10 +4,10 @@ import "./App.css";
 
 function App() {
   return (
-    <div id="test" className="">
+    <>
       <ScanPage />
       <OnlySupportModal />
-    </div>
+    </>
   );
 }
 

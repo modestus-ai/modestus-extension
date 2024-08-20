@@ -15,6 +15,8 @@ export interface ModerationState {
 export interface LoadingResponse {
   type: "LOADING_STATUS";
   isLoading: boolean;
+  isScanned: boolean;
+  isError?: boolean;
 }
 
 export interface ModerationResponse {

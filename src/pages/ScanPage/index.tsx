@@ -6,6 +6,8 @@ import SamplePolicies from "./SamplePolicies";
 import ContentScanner from "./ContentScanner";
 // import CurrentUrl from "./CurrentUrl";
 import AutoScan from "./AutoScan";
+import NotiScanned from "../../components/NotiScanned";
+import NotiScanError from "../../components/NotiScanError";
 
 const ScanPage = () => {
   const [moderation, setModeration] = useState<ModerationState>({
@@ -47,6 +49,9 @@ const ScanPage = () => {
           </div>
         </div>
       </div>
+
+      <NotiScanned />
+      <NotiScanError />
     </div>
   );
 };

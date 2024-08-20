@@ -71,13 +71,32 @@ const handleScroll = () => {
 
 chrome.runtime.onMessage.addListener(
   async (message: ScanAction, sender, sendResponse) => {
-    if (message.action === START_SCAN && moderateKey) {
-      await scanPage(moderateKey, message.moderation, undefined, true);
+    try {
+      if (message.action === START_SCAN && moderateKey) {
+        await scanPage(moderateKey, message.moderation, undefined, true);
+        chrome.runtime.sendMessage({
+          type: LOADING_STATUS,
+          isLoading: false,
+          isScanned: true,
+          isError: false,
+        });
+        sendResponse({ status: "Page scanned successfully!" });
+      } else {
+        chrome.runtime.sendMessage({
+          type: LOADING_STATUS,
+          isLoading: false,
+          isScanned: false,
+          isError: true,
+        });
+      }
+    } catch (e) {
       chrome.runtime.sendMessage({
         type: LOADING_STATUS,
         isLoading: false,
+        isScanned: false,
+        isError: true,
       });
-      sendResponse({ status: "received" });
+      sendResponse({ status: "Page scan error!" });
     }
   },
 );
