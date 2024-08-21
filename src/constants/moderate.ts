@@ -14,16 +14,16 @@ const createSamplePoliciesItem = (label: string, value: string) => ({
 
 export const SAMPLE_POLICIES = [
   createSamplePoliciesItem(
-    "Scam",
-    "The article promotes get-rich-quick schemes, fraudulent investment opportunities, or other deceptive practices.",
+    "Clickbait",
+    "The content uses misleading or sensationalized text to entice clicks, such as 'First 100 likes get...' or 'Repost This to Unlock Exclusive Content...",
   ),
   createSamplePoliciesItem(
-    "Spam",
-    "The article contains unsolicited or irrelevant content, likely with the intent of promoting a product or service.",
+    "Sexuality",
+    "The content contains inappropriate sexual content or language that may be explicit, suggestive, or offensive.",
   ),
   createSamplePoliciesItem(
     "Toxicity",
-    "The article contains abusive, hateful, or discriminatory language towards individuals or groups.",
+    "The content contains abusive, hateful, or discriminatory language towards individuals or groups.",
   ),
 ];
 

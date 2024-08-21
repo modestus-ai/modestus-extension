@@ -76,10 +76,10 @@ export const contentScanElement = (className: string, reasoning: string) => {
   return p;
 };
 
-export const toggleButtonElement = (showContent: string) => {
+export const toggleButtonElement = (content: string) => {
   const div = document.createElement("div");
   div.className = `toggle-button`;
-  div.innerHTML = showContent;
+  div.innerHTML = content;
   div.style.position = "absolute";
   div.style.right = "32px";
   div.style.top = "10.5px";
@@ -87,21 +87,6 @@ export const toggleButtonElement = (showContent: string) => {
   div.style.width = "16px";
   div.style.height = "16px";
   div.style.cursor = "pointer";
-  // button.style.width = "fit-content";
-  // button.style.display = "flex";
-  // button.style.alignItems = "center";
-  // button.style.gap = "1px";
-  // button.style.padding = "4px 8px";
-  // button.style.fontSize = "12px";
-  // button.style.backgroundColor = "#F9FAFB";
-  // button.style.color = "#4B5563";
-  // button.style.border = "1px solid #D1D5DB";
-  // button.style.borderRadius = "1000px";
-  // button.style.cursor = "pointer";
-  // button.style.marginBottom = "4px";
-  // button.style.position = "relative";
-  // button.style.zIndex = "50";
-  // button.style.fontFamily = "revert";
 
   return div;
 };
@@ -168,9 +153,7 @@ export const scanWrapperElement = (scanResults: any) => {
 };
 
 export const removeContentElements = (element: HTMLElement) => {
-  const moreElement = element.querySelector(".moderation-result");
-  console.log({ moreElement });
-  moreElement?.remove();
+  element.querySelector(".moderation-result")?.remove();
   element.querySelector<HTMLElement>(".toggle-button")?.remove();
 };
 
