@@ -15,7 +15,7 @@ const createSamplePoliciesItem = (label: string, value: string) => ({
 export const SAMPLE_POLICIES = [
   createSamplePoliciesItem(
     "Clickbait",
-    "The content uses misleading or sensationalized text to entice clicks, such as 'First 100 likes get...' or 'Repost This to Unlock Exclusive Content...",
+    "The content uses misleading or sensationalized text to entice clicks, such as like or retweet for reward.",
   ),
   createSamplePoliciesItem(
     "Sexuality",
