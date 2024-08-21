@@ -165,8 +165,8 @@ export const scanRedditPage = async (
     if (getContentResult.length > 0) {
       // Divide the content into chunks for moderation
       const chunks = [];
-      for (let i = 0; i < getContentResult.length; i += 5) {
-        chunks.push(getContentResult.slice(i, i + 5));
+      for (let i = 0; i < getContentResult.length; i += 10) {
+        chunks.push(getContentResult.slice(i, i + 10));
       }
 
       for (const chunk of chunks) {
