@@ -5,7 +5,7 @@ const ModestusLogo = () => {
   return (
     <Link
       className="flex cursor-pointer items-center gap-[10px]"
-      href="https://modestus.web.app/"
+      href="https://modestus.ai/"
       target="_blank"
     >
       <Image

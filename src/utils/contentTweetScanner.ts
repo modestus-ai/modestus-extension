@@ -52,7 +52,7 @@ const appendReasoning = (
 
   // Select the media and tweet text elements within the tweet
   const mediaElement = element.querySelector<HTMLElement>(
-    ".css-175oi2r.r-9aw3ui.r-1s2bzr4",
+    ".css-175oi2r.r-9aw3ui",
   );
   const tweetTextElement = element.querySelector<HTMLElement>(
     '[data-testid="tweetText"]',
