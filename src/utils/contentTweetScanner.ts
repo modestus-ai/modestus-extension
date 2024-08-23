@@ -22,7 +22,7 @@ const getContent = () => {
 
     // Remove any previously added moderation results
     clone
-      .querySelectorAll('[class^="moderation-result-"]')
+      .querySelectorAll(".moderation-result")
       .forEach((resultElement) => resultElement.remove());
 
     // Extract the tweet text

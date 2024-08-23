@@ -112,11 +112,11 @@ export const scanWrapperElement = (scanResults: any) => {
           <img src="${modestusLogoImg}" alt="Modestus" style="width: 18px; height: 18px; margin: 0px;" />
           <span style="font-size: 12px; color: #123237; font-weight: bold; font-family: 'Inter', sans-serif;">Detected</span>
         </div>
-        <button type="button" id="caretIcon" style="width: 16px; height: 16px; background-color: transparent; border: none; display: flex; justify-content: center; align-items: center; padding: 0px; margin: 0px; cursor: pointer;">
+        <button type="button" id="caretIcon" style="width: 16px; height: 16px; background-color: transparent; border: none; display: flex; justify-content: center; align-items: center; padding: 0px; margin: 0px; cursor: pointer; transform: rotate(180deg);">
           <img src="${caretDownIcon}" style="margin: 0px; width: 16px; height: 16px;"/>
         </button>
       </div>
-      <div id="scanContent" style="display: none; margin-top: 6px;">
+      <div id="scanContent" style="display: block; margin-top: 6px;">
         ${scanKeys
           .map((scanKey) => {
             return `

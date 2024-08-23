@@ -31,7 +31,7 @@ const getContent = () => {
 
     // Remove previous moderation results from the cloned element
     clone
-      .querySelectorAll('[class^="moderation-result-"]')
+      .querySelectorAll(".moderation-result")
       .forEach((resultElement) => resultElement.remove());
 
     // Extract the text content based on the page type (post or comment)

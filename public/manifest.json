@@ -2,7 +2,7 @@
   "version": "1.0.1",
   "manifest_version": 3,
   "name": "Modestus Safeguard",
-  "description": "Modestus Safeguard is a powerful Chrome extension designed to enhance your social media experience by filtering out unwanted content from your X (formerly Twitter) and Reddit feeds.",
+  "description": "Modestus Safeguard is a Chrome extension that filters unwanted content from your X and Reddit feeds.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "Modestus Safeguard"
@@ -10,7 +10,7 @@
   "side_panel": {
     "default_path": "sidepanel.html"
   },
-  "permissions": ["scripting", "tabs", "activeTab", "storage", "sidePanel"],
+  "permissions": ["tabs", "activeTab", "storage", "sidePanel"],
   "background": {
     "service_worker": "background.js",
     "type": "module",
